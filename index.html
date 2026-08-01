@@ -150,8 +150,8 @@
   </div>
 
   <script>
-    // ⚙️ DEPLOYED APPS SCRIPT WEB APP URL INTEGRATED
-    const API_URL = "https://script.google.com/macros/s/AKfycbyZGDcz2EE0WOoDyLjGAhdHiegub0FcrtK0iUIu8DJZSTByXQoirFlsZ6QheW57MrU9/exec";
+    // NEW DEPLOYED URL ADDED
+    const API_URL = "https://script.google.com/macros/s/AKfycbzSufITdeq53VYP2u4cH5FLMBZHxPOa5YvWUoZEzHSS5A1N1WXi6m_IzkipVcWCZLjQ/exec";
 
     let currentUser = null;
     let currentChatId = null;
@@ -174,16 +174,22 @@
       localStorage.setItem("theme", next);
     }
 
+    async function apiCall(payload) {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      return await response.json();
+    }
+
     async function doLogin() {
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPass").value;
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPass").value.trim();
       document.getElementById("loginError").innerText = "Authenticating...";
       
       try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "login", email, password })
-        }).then(r => r.json());
+        const res = await apiCall({ action: "login", email, password });
 
         if (res.status === "success") {
           currentUser = res.user;
@@ -195,7 +201,8 @@
           document.getElementById("loginError").innerText = res.message || "Login failed";
         }
       } catch(e) {
-        document.getElementById("loginError").innerText = "Connection error. Check URL.";
+        console.error(e);
+        document.getElementById("loginError").innerText = "Connection error. Please try again.";
       }
     }
 
@@ -216,20 +223,17 @@
       chatMessages.push({ sender: "user", text: text });
       input.value = "";
 
-      const res = await fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "processMessage", message: text, userName: currentUser.name })
-      }).then(r => r.json());
+      try {
+        const res = await apiCall({ action: "processMessage", message: text, userName: currentUser.name });
+        appendMsg(res.text, "bot", res.sql);
+        chatMessages.push({ sender: "bot", text: res.text, sql: res.sql });
 
-      appendMsg(res.text, "bot", res.sql);
-      chatMessages.push({ sender: "bot", text: res.text, sql: res.sql });
-
-      const title = chatMessages[0].text.substring(0, 25) + "...";
-      fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "saveChat", email: currentUser.email, chatId: currentChatId, title: title, messages: chatMessages })
-      });
-      loadHistory();
+        const title = chatMessages[0].text.substring(0, 25) + "...";
+        apiCall({ action: "saveChat", email: currentUser.email, chatId: currentChatId, title: title, messages: chatMessages });
+        loadHistory();
+      } catch(e) {
+        appendMsg("Error processing query. Try again.", "bot");
+      }
     }
 
     function appendMsg(text, type, sql = "") {
@@ -242,21 +246,21 @@
     }
 
     async function loadHistory() {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "getHistory", email: currentUser.email })
-      }).then(r => r.json());
-
-      const list = document.getElementById("historyList");
-      list.innerHTML = "";
-      if (res.history) {
-        res.history.reverse().forEach(h => {
-          const item = document.createElement("div");
-          item.className = "history-item";
-          item.innerText = h.title;
-          item.onclick = () => loadChatSession(h);
-          list.appendChild(item);
-        });
+      try {
+        const res = await apiCall({ action: "getHistory", email: currentUser.email });
+        const list = document.getElementById("historyList");
+        list.innerHTML = "";
+        if (res.history) {
+          res.history.reverse().forEach(h => {
+            const item = document.createElement("div");
+            item.className = "history-item";
+            item.innerText = h.title;
+            item.onclick = () => loadChatSession(h);
+            list.appendChild(item);
+          });
+        }
+      } catch(e) {
+        console.error("History load error", e);
       }
     }
 

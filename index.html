@@ -207,7 +207,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSufITdeq53VYP2u4cH5FLMBZHxPOa5YvWUoZEzHSS5A1N1WXi6m_IzkipVcWCZLjQ/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwyKowUFiRNR-YqXghBJetE6XMGp5spxxwjvsOgDn1dJEknGHJ9T4aq_eeTKATs8NwJ/exec";
 
     let currentUser = null;
     let chats = [];
@@ -320,11 +320,10 @@
     }
 
     async function deleteChat(event, chatId) {
-      event.stopPropagation(); // Stop opening the chat when clicking delete
+      event.stopPropagation();
       
       if (!confirm("Are you sure you want to delete this chat?")) return;
 
-      // Remove from local array
       chats = chats.filter(c => c.chatId !== chatId);
 
       if (chats.length > 0) {
@@ -333,7 +332,6 @@
         startNewChat();
       }
 
-      // Sync with Google Sheet Backend
       try {
         await fetch(SCRIPT_URL, {
           method: "POST",
@@ -351,7 +349,6 @@
       input.value = "";
       renderMessageUI("user", msgText);
 
-      // Save User Msg
       saveToLocalHistory("user", msgText);
 
       try {
@@ -368,14 +365,12 @@
         renderMessageUI("bot", res.text, res.sql);
         saveToLocalHistory("bot", res.text, res.sql);
 
-        // Update Title if it's new
         const currentChat = chats.find(c => c.chatId === currentChatId);
         if (currentChat && currentChat.title === "New Chat") {
           currentChat.title = msgText.substring(0, 20) + "...";
           renderHistoryList();
         }
 
-        // Sync with Google Sheet
         saveChatToBackend(currentChat);
 
       } catch (err) {

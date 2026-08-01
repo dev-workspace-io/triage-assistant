@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Triage SQL Assistant</title>
 
-  <!-- Google Fonts & Prism CSS for Code Highlighting -->
+  <!-- Google Fonts & Prism CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,6 @@
       --text-primary: #f3f4f6;
       --text-secondary: #9ca3af;
       --border-color: #1f2937;
-      --chat-bg: #131b2e;
       --bot-msg-bg: #1a233a;
       --user-msg-bg: #ff5500;
       --code-bg: #050811;
@@ -34,7 +33,6 @@
       --text-primary: #1e293b;
       --text-secondary: #64748b;
       --border-color: #e2e8f0;
-      --chat-bg: #ffffff;
       --bot-msg-bg: #fff5f0;
       --user-msg-bg: #ff5500;
       --code-bg: #0f172a;
@@ -160,7 +158,7 @@
       <h2>Triage SQL Workspace</h2>
       <input type="email" id="loginEmail" placeholder="email@oxiliry.com">
       <input type="password" id="loginPass" placeholder="Password">
-      <button onclick="attemptLogin()">Login</button>
+      <button id="loginBtn" onclick="attemptLogin()">Login</button>
       <div id="loginError" class="login-error"></div>
     </div>
   </div>
@@ -213,11 +211,22 @@
     let chats = [];
     let currentChatId = null;
 
+    // HELPER: CORS-Friendly Fetch for Apps Script
+    async function apiCall(payload) {
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      return await response.json();
+    }
+
     // LOGIN LOGIC
     async function attemptLogin() {
       const email = document.getElementById("loginEmail").value;
       const password = document.getElementById("loginPass").value;
       const errorDiv = document.getElementById("loginError");
+      const btn = document.getElementById("loginBtn");
 
       errorDiv.style.display = "none";
       if (!email || !password) {
@@ -226,12 +235,11 @@
         return;
       }
 
+      btn.innerText = "Logging in...";
+      btn.disabled = true;
+
       try {
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "login", email: email, password: password })
-        });
-        const res = await response.json();
+        const res = await apiCall({ action: "login", email: email, password: password });
 
         if (res.status === "success") {
           currentUser = res.user;
@@ -244,8 +252,11 @@
           errorDiv.style.display = "block";
         }
       } catch (err) {
-        errorDiv.innerText = "Network Error. Please try again.";
+        errorDiv.innerText = "Connection error. Please check your network.";
         errorDiv.style.display = "block";
+      } finally {
+        btn.innerText = "Login";
+        btn.disabled = false;
       }
     }
 
@@ -267,11 +278,7 @@
     // LOAD HISTORY
     async function loadChatHistory() {
       try {
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "getHistory", email: currentUser.email })
-        });
-        const res = await response.json();
+        const res = await apiCall({ action: "getHistory", email: currentUser.email });
         chats = res.history || [];
 
         renderHistoryList();
@@ -321,7 +328,6 @@
 
     async function deleteChat(event, chatId) {
       event.stopPropagation();
-      
       if (!confirm("Are you sure you want to delete this chat?")) return;
 
       chats = chats.filter(c => c.chatId !== chatId);
@@ -333,10 +339,7 @@
       }
 
       try {
-        await fetch(SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "deleteChat", email: currentUser.email, chatId: chatId })
-        });
+        await apiCall({ action: "deleteChat", email: currentUser.email, chatId: chatId });
       } catch(e) {}
     }
 
@@ -348,19 +351,14 @@
 
       input.value = "";
       renderMessageUI("user", msgText);
-
       saveToLocalHistory("user", msgText);
 
       try {
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({
-            action: "processMessage",
-            message: msgText,
-            userName: currentUser.name
-          })
+        const res = await apiCall({
+          action: "processMessage",
+          message: msgText,
+          userName: currentUser.name
         });
-        const res = await response.json();
 
         renderMessageUI("bot", res.text, res.sql);
         saveToLocalHistory("bot", res.text, res.sql);
@@ -390,15 +388,12 @@
     async function saveChatToBackend(chat) {
       if (!chat) return;
       try {
-        await fetch(SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({
-            action: "saveChat",
-            email: currentUser.email,
-            chatId: chat.chatId,
-            title: chat.title,
-            messages: chat.messages
-          })
+        await apiCall({
+          action: "saveChat",
+          email: currentUser.email,
+          chatId: chat.chatId,
+          title: chat.title,
+          messages: chat.messages
         });
       } catch(e) {}
     }

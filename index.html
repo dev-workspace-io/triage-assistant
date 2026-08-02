@@ -41,66 +41,82 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; transition: background-color 0.2s, color 0.2s; }
     body { background-color: var(--bg-color); color: var(--text-primary); height: 100vh; display: flex; overflow: hidden; }
 
-    /* PURE CSS CUSTOM DATABASE ANIMATION (LIGHTWEIGHT & FAST) */
-    .custom-db-anim {
-      width: 70px;
-      height: 70px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      position: relative;
-    }
-
-    .db-disk {
-      width: 100%;
-      height: 18px;
-      border: 2px solid var(--primary-orange);
-      border-radius: 50%;
-      background: rgba(255, 85, 0, 0.1);
-      box-shadow: 0 0 10px rgba(255, 85, 0, 0.3);
-      animation: dbPulse 1.8s ease-in-out infinite alternate;
-    }
-
-    .db-disk:nth-child(1) { animation-delay: 0s; }
-    .db-disk:nth-child(2) { animation-delay: 0.3s; }
-    .db-disk:nth-child(3) { animation-delay: 0.6s; }
-
-    @keyframes dbPulse {
-      0% {
-        transform: scale(0.92);
-        opacity: 0.4;
-        box-shadow: 0 0 2px rgba(255, 85, 0, 0.1);
-      }
-      100% {
-        transform: scale(1.08);
-        opacity: 1;
-        box-shadow: 0 0 15px rgba(255, 85, 0, 0.8);
-        background: rgba(255, 85, 0, 0.25);
-      }
-    }
-
-    /* LOGIN SCREEN BACKGROUND PULSE */
-    .bg-glow {
+    /* ---------------------------------------------------- */
+    /* LOGIN BACKGROUND ANIMATION (SQL CYLINDER & CHARTS)   */
+    /* ---------------------------------------------------- */
+    .login-bg-graphics {
       position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 350px; height: 350px;
-      background: radial-gradient(circle, rgba(255, 85, 0, 0.12) 0%, rgba(11, 15, 25, 0) 70%);
-      pointer-events: none;
-      z-index: 1;
+      top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; justify-content: center; align-items: center;
+      pointer-events: none; opacity: 0.22; z-index: 1;
+      overflow: hidden;
+    }
+
+    /* SQL Cylinder Glow Animation */
+    .sql-cylinder-svg {
+      width: 420px;
+      height: 420px;
+      animation: floatCylinder 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatCylinder {
+      0% { transform: translateY(-10px) scale(0.98); }
+      100% { transform: translateY(10px) scale(1.02); }
+    }
+
+    /* Animated Bars in Background */
+    .chart-bar-anim {
+      transform-origin: bottom;
+      animation: barGrow 2.5s ease-in-out infinite alternate;
+    }
+    .bar-1 { animation-delay: 0.2s; }
+    .bar-2 { animation-delay: 0.6s; }
+    .bar-3 { animation-delay: 1.0s; }
+
+    @keyframes barGrow {
+      0% { transform: scaleY(0.4); opacity: 0.3; }
+      100% { transform: scaleY(1.1); opacity: 0.9; }
+    }
+
+    /* Animated Data Pulse Lines */
+    .pulse-line {
+      stroke-dasharray: 10, 15;
+      animation: dashMove 3s linear infinite;
+    }
+
+    @keyframes dashMove {
+      from { stroke-dashoffset: 50; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* ---------------------------------------------------- */
+    /* PURE CSS SPINNER FOR WELCOME OVERLAY                 */
+    /* ---------------------------------------------------- */
+    .loader-ring {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 85, 0, 0.15);
+      border-top: 4px solid var(--primary-orange);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      box-shadow: 0 0 15px rgba(255, 85, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     /* LOGIN SCREEN & MODALS */
     #loginOverlay, .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(11, 15, 25, 0.88); backdrop-filter: blur(8px);
+      background: rgba(11, 15, 25, 0.94); backdrop-filter: blur(8px);
       display: flex; align-items: center; justify-content: center; z-index: 999;
     }
     .login-box, .modal-box {
       background: var(--card-bg); padding: 32px; border-radius: 16px; border: 1px solid var(--border-color);
-      width: 100%; max-width: 380px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      width: 100%; max-width: 380px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6);
       position: relative; z-index: 2;
     }
     .login-box h2, .modal-box h3 { margin-bottom: 20px; font-size: 20px; color: var(--text-primary); }
@@ -226,10 +242,48 @@
 </head>
 <body>
 
-  <!-- LOGIN OVERLAY -->
+  <!-- LOGIN OVERLAY WITH CUSTOM SQL DATABASE & ANALYTICS BACKGROUND GRAPHICS -->
   <div id="loginOverlay">
-    <div class="bg-glow"></div>
+    
+    <!-- INLINE HIGH-TECH SQL SVG ANIMATION -->
+    <div class="login-bg-graphics">
+      <svg class="sql-cylinder-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- SQL Database Cylinders -->
+        <g stroke="#ff5500" stroke-width="2.5">
+          <!-- Top Disc -->
+          <ellipse cx="100" cy="40" rx="55" ry="16" fill="#111827" fill-opacity="0.8"/>
+          
+          <!-- Middle Disc -->
+          <path d="M45 40 v25 c0 8.8 24.6 16 55 16 s55 -7.2 55 -16 v-25" fill="#111827" fill-opacity="0.6"/>
+          
+          <!-- Bottom Disc -->
+          <path d="M45 65 v25 c0 8.8 24.6 16 55 16 s55 -7.2 55 -16 v-25" fill="#111827" fill-opacity="0.6"/>
+          
+          <!-- Base Disc -->
+          <path d="M45 90 v25 c0 8.8 24.6 16 55 16 s55 -7.2 55 -16 v-25" fill="#111827" fill-opacity="0.6"/>
+        </g>
 
+        <!-- Connecting Data Nodes / Lines -->
+        <path d="M25 145 L100 115 L175 145" stroke="#ff5500" stroke-width="1.5" opacity="0.6" class="pulse-line"/>
+        
+        <!-- Animated Chart Bars (Data Visualization) -->
+        <g fill="#ff5500">
+          <rect class="chart-bar-anim bar-1" x="35" y="145" width="12" height="35" rx="3" />
+          <rect class="chart-bar-anim bar-2" x="55" y="130" width="12" height="50" rx="3" />
+          <rect class="chart-bar-anim bar-3" x="135" y="135" width="12" height="45" rx="3" />
+          <rect class="chart-bar-anim bar-1" x="155" y="150" width="12" height="30" rx="3" />
+        </g>
+
+        <!-- Data Trend Line Chart -->
+        <path d="M30 170 Q 70 130, 100 150 T 170 120" stroke="#ff5500" stroke-width="2" fill="none" opacity="0.8"/>
+        
+        <!-- Glowing Data Points -->
+        <circle cx="100" cy="150" r="3.5" fill="#ff5500"/>
+        <circle cx="170" cy="120" r="3.5" fill="#ff5500"/>
+      </svg>
+    </div>
+
+    <!-- LOGIN FORM BOX -->
     <div class="login-box">
       <h2>Triage SQL Workspace</h2>
       <input type="email" id="loginEmail" placeholder="email@oxiliry.com">
@@ -239,14 +293,10 @@
     </div>
   </div>
 
-  <!-- WELCOME SCREEN WITH CUSTOM PURE CSS DB ANIMATION -->
+  <!-- WELCOME SCREEN OVERLAY WITH SPINNER -->
   <div id="welcomeOverlay">
     <div class="welcome-card">
-      <div class="custom-db-anim">
-        <div class="db-disk"></div>
-        <div class="db-disk"></div>
-        <div class="db-disk"></div>
-      </div>
+      <div class="loader-ring"></div>
       <h1 id="welcomeText">Welcome!</h1>
       <p>Initializing SQL Assistant Workspace...</p>
     </div>

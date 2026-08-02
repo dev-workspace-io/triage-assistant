@@ -11,9 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 
-  <!-- Standard Lottie Player Script -->
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
   <style>
     :root {
       --primary-orange: #ff5500;
@@ -44,21 +41,38 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; transition: background-color 0.2s, color 0.2s; }
     body { background-color: var(--bg-color); color: var(--text-primary); height: 100vh; display: flex; overflow: hidden; }
 
-    /* BACKGROUND ANIMATION WRAPPER (LOGIN PAGE) */
-    .bg-animation-wrapper {
+    /* PURE CSS MODERN SPINNER / LOADER */
+    .loader-ring {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255, 85, 0, 0.15);
+      border-top: 4px solid var(--primary-orange);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      box-shadow: 0 0 15px rgba(255, 85, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    /* BACKGROUND PULSE FOR LOGIN SCREEN */
+    .bg-pulse-wrapper {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 100vw;
-      height: 100vh;
-      z-index: 1;
-      opacity: 0.25;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255, 85, 0, 0.15) 0%, rgba(11, 15, 25, 0) 70%);
+      animation: pulse 3s infinite ease-in-out;
       pointer-events: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
+      z-index: 1;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.9; }
     }
 
     /* LOGIN SCREEN & MODALS */
@@ -89,7 +103,7 @@
       color: var(--text-secondary); font-size: 18px; cursor: pointer;
     }
 
-    /* WELCOME SCREEN OVERLAY (WITH ANIMATION) */
+    /* WELCOME SCREEN OVERLAY */
     #welcomeOverlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: var(--bg-color);
@@ -99,7 +113,7 @@
     }
     #welcomeOverlay.show { opacity: 1; visibility: visible; }
     .welcome-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .welcome-card h1 { font-size: 32px; color: var(--text-primary); font-weight: 700; margin-top: 15px; }
+    .welcome-card h1 { font-size: 32px; color: var(--text-primary); font-weight: 700; margin-top: 10px; }
     .welcome-card p { color: var(--primary-orange); font-size: 16px; margin-top: 8px; }
 
     /* MAIN LAYOUT */
@@ -195,22 +209,10 @@
 </head>
 <body>
 
-  <!-- LOGIN OVERLAY WITH ANIMATION BACKGROUND -->
+  <!-- LOGIN OVERLAY WITH GLOW BG -->
   <div id="loginOverlay">
-    
-    <!-- BACKGROUND ANIMATION LAYER -->
-    <div class="bg-animation-wrapper">
-      <lottie-player 
-        src="https://assets10.lottiefiles.com/packages/lf20_w51pcehl.json" 
-        background="transparent" 
-        speed="1" 
-        style="width: 550px; height: 550px;" 
-        loop 
-        autoplay>
-      </lottie-player>
-    </div>
+    <div class="bg-pulse-wrapper"></div>
 
-    <!-- LOGIN FORM BOX -->
     <div class="login-box">
       <h2>Triage SQL Workspace</h2>
       <input type="email" id="loginEmail" placeholder="email@oxiliry.com">
@@ -220,17 +222,10 @@
     </div>
   </div>
 
-  <!-- 2.5-SECOND WELCOME SCREEN WITH ANIMATION -->
+  <!-- WELCOME SCREEN OVERLAY WITH ANIMATED SPINNER -->
   <div id="welcomeOverlay">
     <div class="welcome-card">
-      <lottie-player 
-        src="https://assets10.lottiefiles.com/packages/lf20_w51pcehl.json" 
-        background="transparent" 
-        speed="1.2" 
-        style="width: 200px; height: 200px;" 
-        loop 
-        autoplay>
-      </lottie-player>
+      <div class="loader-ring"></div>
       <h1 id="welcomeText">Welcome!</h1>
       <p>Initializing SQL Assistant Workspace...</p>
     </div>
@@ -339,7 +334,7 @@
           document.getElementById("welcomeText").innerText = "Welcome, " + currentUser.name + "!";
           welcomeOverlay.classList.add("show");
 
-          // 3. Smooth transition to main dashboard after 2.5 seconds
+          // 3. Transition to main dashboard after 2.5 seconds
           setTimeout(() => {
             welcomeOverlay.classList.remove("show");
             document.getElementById("appContainer").style.visibility = "visible";

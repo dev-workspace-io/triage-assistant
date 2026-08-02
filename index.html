@@ -11,6 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 
+  <!-- DotLottie Player Script (For Background & Web Animations) -->
+  <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
   <style>
     :root {
       --primary-orange: #ff5500;
@@ -41,16 +44,32 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; transition: background-color 0.2s, color 0.2s; }
     body { background-color: var(--bg-color); color: var(--text-primary); height: 100vh; display: flex; overflow: hidden; }
 
+    /* BACKGROUND ANIMATION CONTAINER */
+    .bg-animation-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.25; /* Subtle watermark opacity */
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
     /* LOGIN SCREEN & MODALS */
     #loginOverlay, .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+      background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(8px);
       display: flex; align-items: center; justify-content: center; z-index: 999;
     }
     .login-box, .modal-box {
       background: var(--card-bg); padding: 32px; border-radius: 16px; border: 1px solid var(--border-color);
-      width: 100%; max-width: 380px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      position: relative;
+      width: 100%; max-width: 380px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      position: relative; z-index: 2;
     }
     .login-box h2, .modal-box h3 { margin-bottom: 20px; font-size: 20px; color: var(--text-primary); }
     .login-box input, .modal-box input {
@@ -68,6 +87,19 @@
       position: absolute; top: 12px; right: 16px; background: none; border: none;
       color: var(--text-secondary); font-size: 18px; cursor: pointer;
     }
+
+    /* WELCOME SCREEN OVERLAY (2 SECONDS POPUP) */
+    #welcomeOverlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: var(--bg-color);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 10000; opacity: 0; visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    #welcomeOverlay.show { opacity: 1; visibility: visible; }
+    .welcome-card { text-align: center; }
+    .welcome-card h1 { font-size: 32px; color: var(--text-primary); font-weight: 700; margin-top: 10px; }
+    .welcome-card p { color: var(--primary-orange); font-size: 16px; margin-top: 6px; }
 
     /* MAIN LAYOUT */
     #appContainer { display: flex; width: 100%; height: 100vh; visibility: hidden; }
@@ -162,14 +194,36 @@
 </head>
 <body>
 
-  <!-- LOGIN OVERLAY -->
+  <!-- LOGIN OVERLAY WITH DATABASE ANIMATION -->
   <div id="loginOverlay">
+    
+    <!-- BACKGROUND ANIMATION (Chalati Rahegi Jab Tak Logout Hai) -->
+    <div class="bg-animation-wrapper">
+      <dotlottie-player 
+        src="https://lottie.host/8040a4cf-48ee-44a3-a74e-5e6382173b22/8R2i7JSm7v.json" 
+        background="transparent" 
+        speed="1" 
+        style="width: 700px; height: 700px;" 
+        loop 
+        autoplay>
+      </dotlottie-player>
+    </div>
+
+    <!-- LOGIN FORM BOX -->
     <div class="login-box">
       <h2>Triage SQL Workspace</h2>
       <input type="email" id="loginEmail" placeholder="email@oxiliry.com">
       <input type="password" id="loginPass" placeholder="Password">
       <button id="loginBtn" onclick="attemptLogin()">Login</button>
       <div id="loginError" class="login-error"></div>
+    </div>
+  </div>
+
+  <!-- 2-SECOND WELCOME OVERLAY -->
+  <div id="welcomeOverlay">
+    <div class="welcome-card">
+      <h1 id="welcomeText">Welcome!</h1>
+      <p>Initializing SQL Assistant Workspace...</p>
     </div>
   </div>
 
@@ -267,10 +321,23 @@
 
         if (res.status === "success") {
           currentUser = res.user;
+
+          // 1. LOGIN OVERLAY HIDE KAREIN
           document.getElementById("loginOverlay").style.display = "none";
-          document.getElementById("appContainer").style.visibility = "visible";
-          document.getElementById("userNameDisplay").innerText = currentUser.name;
-          loadChatHistory();
+
+          // 2. WELCOME OVERLAY SHOW KAREIN (Dynamic Name Ke Saath)
+          const welcomeOverlay = document.getElementById("welcomeOverlay");
+          document.getElementById("welcomeText").innerText = "Welcome, " + currentUser.name + "!";
+          welcomeOverlay.classList.add("show");
+
+          // 3. 2 SECONDS BAAD MAIN WORKSPACE PAR TRANSITION
+          setTimeout(() => {
+            welcomeOverlay.classList.remove("show");
+            document.getElementById("appContainer").style.visibility = "visible";
+            document.getElementById("userNameDisplay").innerText = currentUser.name;
+            loadChatHistory();
+          }, 2000); // 2 seconds
+
         } else {
           errorDiv.innerText = res.message || "Invalid login credentials.";
           errorDiv.style.display = "block";

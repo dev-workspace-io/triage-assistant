@@ -11,8 +11,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 
-  <!-- DotLottie Player Script (For Background & Web Animations) -->
-  <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+  <!-- Standard Lottie Player Script (Fully Compatible with GitHub Pages) -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
   <style>
     :root {
@@ -44,15 +44,16 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; transition: background-color 0.2s, color 0.2s; }
     body { background-color: var(--bg-color); color: var(--text-primary); height: 100vh; display: flex; overflow: hidden; }
 
-    /* BACKGROUND ANIMATION CONTAINER */
+    /* BACKGROUND ANIMATION WRAPPER */
     .bg-animation-wrapper {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      opacity: 0.25; /* Subtle watermark opacity */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      opacity: 0.35;
       pointer-events: none;
       display: flex;
       justify-content: center;
@@ -63,7 +64,7 @@
     /* LOGIN SCREEN & MODALS */
     #loginOverlay, .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(8px);
+      background: rgba(11, 15, 25, 0.88); backdrop-filter: blur(8px);
       display: flex; align-items: center; justify-content: center; z-index: 999;
     }
     .login-box, .modal-box {
@@ -194,19 +195,19 @@
 </head>
 <body>
 
-  <!-- LOGIN OVERLAY WITH DATABASE ANIMATION -->
+  <!-- LOGIN OVERLAY WITH ANIMATION BACKGROUND -->
   <div id="loginOverlay">
     
-    <!-- BACKGROUND ANIMATION (Chalati Rahegi Jab Tak Logout Hai) -->
+    <!-- BACKGROUND ANIMATION LAYER -->
     <div class="bg-animation-wrapper">
-      <dotlottie-player 
+      <lottie-player 
         src="https://lottie.host/8040a4cf-48ee-44a3-a74e-5e6382173b22/8R2i7JSm7v.json" 
         background="transparent" 
         speed="1" 
-        style="width: 700px; height: 700px;" 
+        style="width: 650px; height: 650px;" 
         loop 
         autoplay>
-      </dotlottie-player>
+      </lottie-player>
     </div>
 
     <!-- LOGIN FORM BOX -->
@@ -322,21 +323,21 @@
         if (res.status === "success") {
           currentUser = res.user;
 
-          // 1. LOGIN OVERLAY HIDE KAREIN
+          // 1. Hide Login Box & Background Animation
           document.getElementById("loginOverlay").style.display = "none";
 
-          // 2. WELCOME OVERLAY SHOW KAREIN (Dynamic Name Ke Saath)
+          // 2. Display 2-Second Welcome Animation Modal
           const welcomeOverlay = document.getElementById("welcomeOverlay");
           document.getElementById("welcomeText").innerText = "Welcome, " + currentUser.name + "!";
           welcomeOverlay.classList.add("show");
 
-          // 3. 2 SECONDS BAAD MAIN WORKSPACE PAR TRANSITION
+          // 3. Transition to Main App Dashboard after 2 seconds
           setTimeout(() => {
             welcomeOverlay.classList.remove("show");
             document.getElementById("appContainer").style.visibility = "visible";
             document.getElementById("userNameDisplay").innerText = currentUser.name;
             loadChatHistory();
-          }, 2000); // 2 seconds
+          }, 2000);
 
         } else {
           errorDiv.innerText = res.message || "Invalid login credentials.";

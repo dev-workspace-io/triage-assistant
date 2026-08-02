@@ -128,11 +128,11 @@
     .msg.user { align-self: flex-end; background: var(--user-msg-bg); color: white; border-bottom-right-radius: 2px; }
     .msg.bot { align-self: flex-start; background: var(--bot-msg-bg); border: 1px solid var(--border-color); border-bottom-left-radius: 2px; }
 
-    .msg-author { font-weight: 700; margin-bottom: 4px; font-size: 12px; opacity: 0.8; }
+    .msg-author { font-weight: 700; margin-bottom: 6px; font-size: 12px; opacity: 0.8; }
 
     /* SQL CODE BLOCK */
     .sql-box {
-      margin-top: 10px; background: var(--code-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden;
+      margin-top: 12px; background: var(--code-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden;
     }
     .sql-header {
       display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05);
@@ -231,14 +231,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
 
   <script>
-    // UPDATED NAYA WEB APP URL HERE:
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSufITdeq53VYP2u4cH5FLMBZHxPOa5YvWUoZEzHSS5A1N1WXi6m_IzkipVcWCZLjQ/exec";
 
     let currentUser = null;
     let chats = [];
     let currentChatId = null;
 
-    // HELPER: CORS-Friendly Fetch for Apps Script
     async function apiCall(payload) {
       const response = await fetch(SCRIPT_URL, {
         method: "POST",
@@ -248,7 +246,6 @@
       return await response.json();
     }
 
-    // LOGIN LOGIC
     async function attemptLogin() {
       const email = document.getElementById("loginEmail").value;
       const password = document.getElementById("loginPass").value;
@@ -295,7 +292,6 @@
       document.getElementById("loginPass").value = "";
     }
 
-    // CHANGE PASSWORD MODAL LOGIC
     function openPasswordModal() {
       document.getElementById("oldPassInput").value = "";
       document.getElementById("newPassInput").value = "";
@@ -362,14 +358,12 @@
       }
     }
 
-    // THEME TOGGLE
     function toggleTheme() {
       const currentTheme = document.documentElement.getAttribute("data-theme");
       const newTheme = currentTheme === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", newTheme);
     }
 
-    // LOAD HISTORY
     async function loadChatHistory() {
       try {
         const res = await apiCall({ action: "getHistory", email: currentUser.email });
@@ -437,7 +431,6 @@
       } catch(e) {}
     }
 
-    // SEND MESSAGE
     async function sendMessage() {
       const input = document.getElementById("userInput");
       const msgText = input.value.trim();

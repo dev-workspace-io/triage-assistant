@@ -8,7 +8,7 @@
   <!-- Google Fonts & Prism CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 
   <style>
@@ -16,15 +16,15 @@
       --primary-orange: #ff5500;
       --primary-hover: #e04b00;
       --cyan-glow: #00f0ff;
-      --bg-color: #070a12;
-      --card-bg: rgba(17, 24, 39, 0.85);
-      --sidebar-bg: #0d121f;
+      --bg-color: #050811;
+      --card-bg: rgba(13, 18, 30, 0.85);
+      --sidebar-bg: #0b0f19;
       --text-primary: #f3f4f6;
       --text-secondary: #9ca3af;
       --border-color: #1f2937;
-      --bot-msg-bg: #1a233a;
+      --bot-msg-bg: #131b2e;
       --user-msg-bg: #ff5500;
-      --code-bg: #050811;
+      --code-bg: #070b14;
     }
 
     [data-theme="light"] {
@@ -43,271 +43,241 @@
     body { background-color: var(--bg-color); color: var(--text-primary); height: 100vh; display: flex; overflow: hidden; }
 
     /* ---------------------------------------------------- */
-    /* HIGH-TECH SQL & CYBER BACKGROUND ANIMATIONS          */
+    /* ROTATING HEXAGON SQL CORE BACKGROUND ANIMATION       */
     /* ---------------------------------------------------- */
     .login-bg-graphics {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; opacity: 0.6; z-index: 1;
+      pointer-events: none; z-index: 1;
       overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    /* 1. Hologram Orbit (Top Left / Mid Left) */
-    .cyber-node-1 { position: absolute; top: 10%; left: 8%; width: 280px; height: 280px; }
-    .hud-ring { transform-origin: center; animation: spinClockwise 18s linear infinite; }
-    .hud-ring-inner { transform-origin: center; animation: spinCounter 12s linear infinite; }
-    
-    /* 2. Database Cloud Sync Node (Top Right) */
-    .cyber-node-2 { position: absolute; top: 12%; right: 8%; width: 260px; height: 220px; animation: floatPulse 5s ease-in-out infinite alternate; }
-
-    /* 3. Connected Network Mesh (Bottom Left) */
-    .cyber-node-3 { position: absolute; bottom: 8%; left: 8%; width: 320px; height: 200px; }
-
-    /* 4. Glowing Data Ring (Bottom Right) */
-    .cyber-node-4 { position: absolute; bottom: 8%; right: 8%; width: 240px; height: 240px; }
-
-    /* Keyframe Animations */
-    @keyframes spinClockwise {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes spinCounter {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(-360deg); }
-    }
-
-    @keyframes floatPulse {
-      0% { transform: translateY(0px) scale(0.98); }
-      100% { transform: translateY(-12px) scale(1.02); }
-    }
-
-    /* Pulse effects for Nodes */
-    .pulse-node { animation: nodeGlow 2s ease-in-out infinite alternate; }
-    .p2 { animation-delay: 0.6s; }
-    .p3 { animation-delay: 1.2s; }
-
-    @keyframes nodeGlow {
-      0% { fill: #ff5500; r: 4; filter: drop-shadow(0 0 2px #ff5500); }
-      100% { fill: var(--cyan-glow); r: 7; filter: drop-shadow(0 0 10px var(--cyan-glow)); }
-    }
-
-    .data-stream-line { stroke-dasharray: 6, 10; animation: streamFlow 3s linear infinite; }
-    @keyframes streamFlow {
-      from { stroke-dashoffset: 32; }
-      to { stroke-dashoffset: 0; }
-    }
-
-    /* Grid Overlay */
     .cyber-grid {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background-image: linear-gradient(rgba(255, 85, 0, 0.05) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255, 85, 0, 0.05) 1px, transparent 1px);
-      background-size: 50px 50px;
+      background-image: radial-gradient(rgba(255, 85, 0, 0.12) 1px, transparent 1px);
+      background-size: 30px 30px;
     }
 
-    /* ---------------------------------------------------- */
-    /* PURE CSS SPINNER FOR WELCOME OVERLAY                 */
-    /* ---------------------------------------------------- */
-    .loader-ring {
-      width: 50px; height: 50px;
-      border: 4px solid rgba(255, 85, 0, 0.15);
-      border-top: 4px solid var(--primary-orange);
+    .hexagon-orbit-wrapper {
+      position: relative;
+      width: 750px; height: 750px;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0.45;
+    }
+
+    /* CENTER HUGE HEXAGON CORE */
+    .center-hex-core {
+      position: absolute;
+      width: 220px; height: 220px;
+      filter: drop-shadow(0 0 15px rgba(255, 85, 0, 0.6));
+    }
+
+    /* ROTATING ORBIT CONTAINER FOR 6 HEXAGONS */
+    .hex-orbit-ring {
+      position: absolute;
+      width: 580px; height: 580px;
       border-radius: 50%;
-      animation: spin 0.9s linear infinite;
-      box-shadow: 0 0 15px rgba(255, 85, 0, 0.3);
-      margin-bottom: 20px;
+      border: 1px dashed rgba(0, 240, 255, 0.25);
+      animation: rotateOrbit 30s linear infinite;
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .hex-node-wrapper {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 100px; height: 100px;
+      margin-top: -50px; margin-left: -50px;
     }
 
-    /* LOGIN SCREEN & MODALS */
-    #loginOverlay, .modal-overlay {
+    /* Counter Rotation so Icons stay straight while revolving */
+    .hex-node-wrapper svg {
+      width: 100%; height: 100%;
+      filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.4));
+      animation: counterRotate 30s linear infinite;
+    }
+
+    /* Positioning 6 Hexagons in Circle (60 Deg steps) */
+    .node-1 { transform: rotate(0deg) translate(270px) rotate(0deg); }
+    .node-2 { transform: rotate(60deg) translate(270px) rotate(-60deg); }
+    .node-3 { transform: rotate(120deg) translate(270px) rotate(-120deg); }
+    .node-4 { transform: rotate(180deg) translate(270px) rotate(-180deg); }
+    .node-5 { transform: rotate(240deg) translate(270px) rotate(-240deg); }
+    .node-6 { transform: rotate(300deg) translate(270px) rotate(-300deg); }
+
+    @keyframes rotateOrbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes counterRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(-360deg); }
+    }
+
+    /* ---------------------------------------------------- */
+    /* UI ELEMENTS & LOGIN BOX                              */
+    /* ---------------------------------------------------- */
+    #loginOverlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(7, 10, 18, 0.88); backdrop-filter: blur(10px);
+      background: rgba(5, 8, 17, 0.85); backdrop-filter: blur(8px);
       display: flex; align-items: center; justify-content: center; z-index: 999;
     }
-    .login-box, .modal-box {
-      background: var(--card-bg); padding: 36px; border-radius: 16px; border: 1px solid rgba(255, 85, 0, 0.3);
-      width: 100%; max-width: 380px; text-align: center; box-shadow: 0 0 30px rgba(255, 85, 0, 0.15);
-      position: relative; z-index: 2;
+    .login-box {
+      background: var(--card-bg); padding: 40px 36px; border-radius: 20px;
+      border: 1.5px solid rgba(255, 85, 0, 0.5); width: 100%; max-width: 380px; text-align: center;
+      box-shadow: 0 0 40px rgba(255, 85, 0, 0.25); position: relative; z-index: 10;
     }
-    .login-box h2, .modal-box h3 { margin-bottom: 20px; font-size: 20px; color: var(--text-primary); font-weight: 700; letter-spacing: 0.5px; }
-    .login-box input, .modal-box input {
-      width: 100%; padding: 12px; margin-bottom: 14px; border-radius: 8px; border: 1px solid var(--border-color);
-      background: rgba(5, 8, 17, 0.8); color: var(--text-primary); outline: none; font-size: 14px;
+    .login-box h2 { margin-bottom: 22px; font-size: 20px; color: #ffffff; font-weight: 700; letter-spacing: 0.5px; }
+    .login-box input {
+      width: 100%; padding: 13px; margin-bottom: 14px; border-radius: 10px; border: 1px solid var(--border-color);
+      background: rgba(7, 11, 20, 0.9); color: var(--text-primary); outline: none; font-size: 14px;
     }
-    .login-box input:focus { border-color: var(--primary-orange); box-shadow: 0 0 8px rgba(255, 85, 0, 0.4); }
-    .login-box button, .modal-box button.btn-primary {
-      width: 100%; padding: 12px; background: var(--primary-orange); color: white; border: none;
-      border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 8px; box-shadow: 0 4px 15px rgba(255, 85, 0, 0.4);
+    .login-box input:focus { border-color: var(--primary-orange); box-shadow: 0 0 10px rgba(255, 85, 0, 0.4); }
+    .login-box button {
+      width: 100%; padding: 13px; background: var(--primary-orange); color: white; border: none;
+      border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 8px; font-size: 15px;
+      box-shadow: 0 4px 18px rgba(255, 85, 0, 0.45);
     }
-    .login-box button:hover, .modal-box button.btn-primary:hover { background: var(--primary-hover); }
-    .login-error, .modal-msg { font-size: 13px; margin-top: 10px; display: none; }
-    
-    .modal-close {
-      position: absolute; top: 12px; right: 16px; background: none; border: none;
-      color: var(--text-secondary); font-size: 18px; cursor: pointer;
-    }
+    .login-box button:hover { background: var(--primary-hover); }
+    .login-error { font-size: 13px; color: #ef4444; margin-top: 10px; display: none; }
 
-    /* WELCOME SCREEN OVERLAY */
+    /* LOADER & OVERLAYS */
+    .loader-ring {
+      width: 50px; height: 50px; border: 4px solid rgba(255, 85, 0, 0.15);
+      border-top: 4px solid var(--primary-orange); border-radius: 50%;
+      animation: spin 0.9s linear infinite; margin-bottom: 20px;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
     #welcomeOverlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: var(--bg-color);
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-color);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      z-index: 10000; opacity: 0; visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 10000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
     }
     #welcomeOverlay.show { opacity: 1; visibility: visible; }
-    .welcome-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .welcome-card h1 { font-size: 30px; color: var(--text-primary); font-weight: 700; margin-top: 10px; }
-    .welcome-card p { color: var(--primary-orange); font-size: 15px; margin-top: 6px; }
+    .welcome-card h1 { font-size: 28px; color: var(--text-primary); margin-top: 10px; }
+    .welcome-card p { color: var(--primary-orange); font-size: 14px; margin-top: 6px; }
 
-    /* MAIN LAYOUT */
     #appContainer { display: flex; width: 100%; height: 100vh; visibility: hidden; }
-
-    /* SIDEBAR */
-    .sidebar {
-      width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color);
-      display: flex; flex-direction: column; justify-content: space-between; padding: 16px;
-    }
-    .new-chat-btn {
-      width: 100%; padding: 10px; background: var(--primary-orange); color: white; border: none;
-      border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 20px;
-    }
-    .new-chat-btn:hover { background: var(--primary-hover); }
-    
+    .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 16px; }
+    .new-chat-btn { width: 100%; padding: 10px; background: var(--primary-orange); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 20px; }
     .history-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-    .history-item {
-      padding: 10px; border-radius: 8px; border: 1px solid transparent; cursor: pointer;
-      font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .history-item:hover, .history-item.active {
-      background: var(--card-bg); border-color: var(--border-color); color: var(--text-primary);
-    }
-    .history-title { flex: 1; overflow: hidden; text-overflow: ellipsis; }
-    .delete-btn {
-      background: transparent; border: none; color: var(--text-secondary); font-size: 14px;
-      cursor: pointer; padding: 2px 6px; border-radius: 4px; display: none;
-    }
+    .history-item { padding: 10px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; font-size: 13px; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center; }
+    .history-item:hover, .history-item.active { background: var(--card-bg); border-color: var(--border-color); color: var(--text-primary); }
+    .history-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .delete-btn { background: transparent; border: none; color: var(--text-secondary); font-size: 14px; cursor: pointer; display: none; }
     .history-item:hover .delete-btn { display: block; }
-    .delete-btn:hover { color: #ef4444; background: rgba(239,68,68,0.1); }
 
     .sidebar-footer { border-top: 1px solid var(--border-color); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
     .user-row { display: flex; justify-content: space-between; align-items: center; }
-    .user-info { font-weight: 600; font-size: 13px; }
-    .icon-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 14px; }
-    .icon-btn:hover { color: var(--text-primary); }
     .logout-btn { background: none; border: none; color: var(--primary-orange); cursor: pointer; font-size: 13px; font-weight: 600; text-align: left; }
 
-    /* MAIN CHAT AREA */
     .main-chat { flex: 1; display: flex; flex-direction: column; background: var(--bg-color); }
-    
-    .top-bar {
-      height: 60px; padding: 0 24px; border-bottom: 1px solid var(--border-color);
-      display: flex; justify-content: space-between; align-items: center; background: var(--sidebar-bg);
-    }
-    .top-bar h3 { font-size: 16px; font-weight: 600; }
-    .top-bar p { font-size: 12px; color: var(--text-secondary); }
-    
-    .theme-toggle {
-      background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-primary);
-      padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer;
-    }
+    .top-bar { height: 60px; padding: 0 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--sidebar-bg); }
+    .theme-toggle { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-primary); padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; }
 
     .messages-container { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
-
     .msg { max-width: 80%; padding: 14px 18px; border-radius: 12px; font-size: 14px; line-height: 1.5; }
     .msg.user { align-self: flex-end; background: var(--user-msg-bg); color: white; border-bottom-right-radius: 2px; }
     .msg.bot { align-self: flex-start; background: var(--bot-msg-bg); border: 1px solid var(--border-color); border-bottom-left-radius: 2px; }
-
     .msg-author { font-weight: 700; margin-bottom: 6px; font-size: 12px; opacity: 0.8; }
 
-    /* SQL CODE BLOCK */
-    .sql-box {
-      margin-top: 12px; background: var(--code-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden;
-    }
-    .sql-header {
-      display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05);
-      padding: 6px 12px; font-size: 11px; color: var(--text-secondary); border-bottom: 1px solid var(--border-color);
-    }
-    .copy-btn {
-      background: var(--primary-orange); color: white; border: none; padding: 3px 8px;
-      border-radius: 4px; font-size: 11px; cursor: pointer;
-    }
-    .copy-btn:hover { background: var(--primary-hover); }
-    pre[class*="language-"] { margin: 0 !important; padding: 12px !important; background: transparent !important; }
+    .sql-box { margin-top: 12px; background: var(--code-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden; }
+    .sql-header { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 6px 12px; font-size: 11px; color: var(--text-secondary); border-bottom: 1px solid var(--border-color); }
+    .copy-btn { background: var(--primary-orange); color: white; border: none; padding: 3px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; }
 
-    /* INPUT AREA */
     .input-area { padding: 16px 24px; border-top: 1px solid var(--border-color); background: var(--sidebar-bg); }
     .input-box { display: flex; gap: 12px; }
-    .input-box textarea {
-      flex: 1; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px;
-      color: var(--text-primary); padding: 12px; font-size: 14px; resize: none; height: 48px; outline: none;
-    }
-    .send-btn {
-      background: var(--primary-orange); color: white; border: none; padding: 0 24px;
-      border-radius: 8px; font-weight: 600; cursor: pointer;
-    }
-    .send-btn:hover { background: var(--primary-hover); }
+    .input-box textarea { flex: 1; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); padding: 12px; font-size: 14px; resize: none; height: 48px; outline: none; }
+    .send-btn { background: var(--primary-orange); color: white; border: none; padding: 0 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
     .footer-note { font-size: 11px; color: var(--text-secondary); text-align: center; margin-top: 8px; }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN OVERLAY WITH CYBER SQL ANIMATIONS -->
+  <!-- LOGIN OVERLAY WITH ROTATING HEXAGON SQL CORE BACKGROUND -->
   <div id="loginOverlay">
     
     <div class="login-bg-graphics">
       <div class="cyber-grid"></div>
 
-      <!-- 1. Hologram SQL Orbit (Top Left) -->
-      <svg class="cyber-node-1" viewBox="0 0 200 200" fill="none">
-        <circle class="hud-ring" cx="100" cy="100" r="80" stroke="#ff5500" stroke-width="1.5" stroke-dasharray="10 15" opacity="0.6"/>
-        <circle class="hud-ring-inner" cx="100" cy="100" r="60" stroke="#00f0ff" stroke-width="2" stroke-dasharray="40 20 10 5" opacity="0.5"/>
-        <text x="100" y="108" fill="#ff5500" font-size="22" font-family="'Fira Code', monospace" font-weight="bold" text-anchor="middle" filter="drop-shadow(0 0 8px #ff5500)">SQL</text>
-      </svg>
-
-      <!-- 2. Cloud Database Sync Node (Top Right) -->
-      <svg class="cyber-node-2" viewBox="0 0 200 160" fill="none">
-        <!-- Database Stacks -->
-        <g stroke="#ff5500" stroke-width="2" opacity="0.8">
-          <ellipse cx="140" cy="40" rx="30" ry="8" fill="#070a12"/>
-          <path d="M110 40 v20 c0 4.4 13.4 8 30 8 s30 -3.6 30 -8 v-20" />
-          <path d="M110 60 v20 c0 4.4 13.4 8 30 8 s30 -3.6 30 -8 v-20" />
-        </g>
-        <!-- Cloud Node -->
-        <path d="M40 90 A25 25 0 0 1 85 75 A30 30 0 0 1 125 90 A20 20 0 0 1 120 120 L45 120 A20 20 0 0 1 40 90 Z" fill="#070a12" stroke="#00f0ff" stroke-width="2" opacity="0.7"/>
-        <!-- Connection Line -->
-        <path d="M90 90 L125 60" stroke="#ff5500" stroke-width="2" class="data-stream-line"/>
-      </svg>
-
-      <!-- 3. Connected SQL Network Nodes (Bottom Left) -->
-      <svg class="cyber-node-3" viewBox="0 0 260 160" fill="none">
-        <path d="M20 130 L80 50 L160 100 L240 30" stroke="#ff5500" stroke-width="2" opacity="0.4"/>
-        <path d="M20 130 L160 100" stroke="#00f0ff" stroke-width="1.5" class="data-stream-line"/>
+      <div class="hexagon-orbit-wrapper">
         
-        <circle class="pulse-node" cx="20" cy="130" r="5"/>
-        <circle class="pulse-node p2" cx="80" cy="50" r="5"/>
-        <circle class="pulse-node p3" cx="160" cy="100" r="5"/>
-        <circle class="pulse-node p2" cx="240" cy="30" r="5"/>
+        <!-- CENTER SQL BIG HEXAGON -->
+        <svg class="center-hex-core" viewBox="0 0 200 200">
+          <polygon points="100,10 180,55 180,145 100,190 20,145 20,55" fill="none" stroke="#ff5500" stroke-width="5" />
+          <polygon points="100,20 170,60 170,140 100,180 30,140 30,60" fill="rgba(255, 85, 0, 0.08)" stroke="#00f0ff" stroke-width="2" stroke-dasharray="12 6" />
+          <text x="100" y="112" fill="#ffffff" font-size="34" font-family="'Fira Code', monospace" font-weight="700" text-anchor="middle">SQL</text>
+        </svg>
 
-        <text x="80" y="35" fill="#9ca3af" font-size="10" font-family="monospace">SELECT *</text>
-        <text x="160" y="120" fill="#9ca3af" font-size="10" font-family="monospace">JOIN_TABLE</text>
-      </svg>
+        <!-- ROTATING ORBIT RING WITH 6 HEXAGON NODES -->
+        <div class="hex-orbit-ring">
+          
+          <!-- 1. Cloud Database Hexagon -->
+          <div class="hex-node-wrapper node-1">
+            <svg viewBox="0 0 100 100">
+              <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="#0b0f19" stroke="#00f0ff" stroke-width="3"/>
+              <!-- Cloud & DB Icon -->
+              <path d="M35 50 A10 10 0 0 1 55 42 A12 12 0 0 1 72 50 A8 8 0 0 1 68 64 L36 64 A8 8 0 0 1 35 50 Z" fill="none" stroke="#ffffff" stroke-width="2"/>
+              <ellipse cx="50" cy="36" rx="14" ry="4" fill="none" stroke="#ff5500" stroke-width="2"/>
+              <path d="M36 36 v10 c0 2.2 6.2 4 14 4 s14 -1.8 14 -4 v-10" fill="none" stroke="#ff5500" stroke-width="2"/>
+            </svg>
+          </div>
 
-      <!-- 4. Cyber Pie / Radar Scanner (Bottom Right) -->
-      <svg class="cyber-node-4" viewBox="0 0 180 180" fill="none">
-        <circle cx="90" cy="90" r="70" stroke="#ff5500" stroke-width="1" opacity="0.3"/>
-        <circle cx="90" cy="90" r="45" stroke="#00f0ff" stroke-width="1" stroke-dasharray="6 6" opacity="0.5"/>
-        <path d="M90 90 L90 20 A70 70 0 0 1 160 90 Z" fill="#ff5500" opacity="0.25"/>
-        <line x1="90" y1="90" x2="150" y2="40" stroke="#00f0ff" stroke-width="2"/>
-        <circle cx="150" cy="40" r="4" fill="#00f0ff"/>
-      </svg>
+          <!-- 2. Search / Query Hexagon -->
+          <div class="hex-node-wrapper node-2">
+            <svg viewBox="0 0 100 100">
+              <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="#0b0f19" stroke="#00f0ff" stroke-width="3"/>
+              <!-- Magnifying Glass Icon -->
+              <circle cx="45" cy="45" r="14" fill="none" stroke="#ffffff" stroke-width="3"/>
+              <line x1="55" y1="55" x2="70" y2="70" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <!-- 3. Filter Funnel Hexagon -->
+          <div class="hex-node-wrapper node-3">
+            <svg viewBox="0 0 100 100">
+              <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="#0b0f19" stroke="#00f0ff" stroke-width="3"/>
+              <!-- Funnel / Gear Icon -->
+              <path d="M30 32 L70 32 L55 52 L55 70 L45 74 L45 52 Z" fill="none" stroke="#ff5500" stroke-width="2.5"/>
+              <text x="50" y="28" fill="#00f0ff" font-size="8" font-family="monospace" text-anchor="middle">110100</text>
+            </svg>
+          </div>
+
+          <!-- 4. Gear & Code Hexagon -->
+          <div class="hex-node-wrapper node-4">
+            <svg viewBox="0 0 100 100">
+              <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="#0b0f19" stroke="#00f0ff" stroke-width="3"/>
+              <!-- Code Brackets & Gears -->
+              <path d="M36 45 L28 50 L36 55 M64 45 L72 50 L64 55 M53 42 L47 58" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <circle cx="50" cy="70" r="6" fill="none" stroke="#ff5500" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <!-- 5. Media Window Hexagon -->
+          <div class="hex-node-wrapper node-5">
+            <svg viewBox="0 0 100 100">
+              <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="#0b0f19" stroke="#00f0ff" stroke-width="3"/>
+              <!-- Window / Video Play Icon -->
+              <rect x="28" y="32" width="44" height="34" rx="3" fill="none" stroke="#ffffff" stroke-width="2.5"/>
+              <polygon points="45,43 58,49 45,55" fill="#ff5500"/>
+            </svg>
+          </div>
+
+          <!-- 6. Laptop & Document Hexagon -->
+          <div class="hex-node-wrapper node-6">
+            <svg viewBox="0 0 100 100">
+              <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="#0b0f19" stroke="#00f0ff" stroke-width="3"/>
+              <!-- Laptop & Doc Icon -->
+              <rect x="30" y="32" width="40" height="26" rx="2" fill="none" stroke="#ffffff" stroke-width="2"/>
+              <path d="M24 62 L76 62 L72 58 L28 58 Z" fill="#ff5500"/>
+              <line x1="38" y1="40" x2="62" y2="40" stroke="#00f0ff" stroke-width="2"/>
+              <line x1="38" y1="46" x2="56" y2="46" stroke="#00f0ff" stroke-width="2"/>
+            </svg>
+          </div>
+
+        </div>
+      </div>
 
     </div>
 
@@ -321,25 +291,12 @@
     </div>
   </div>
 
-  <!-- WELCOME SCREEN OVERLAY WITH SPINNER -->
+  <!-- WELCOME SCREEN OVERLAY -->
   <div id="welcomeOverlay">
     <div class="welcome-card">
       <div class="loader-ring"></div>
       <h1 id="welcomeText">Welcome!</h1>
       <p>Initializing SQL Assistant Workspace...</p>
-    </div>
-  </div>
-
-  <!-- CHANGE PASSWORD MODAL -->
-  <div id="passwordModal" class="modal-overlay" style="display: none;">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closePasswordModal()">✕</button>
-      <h3>Change Password</h3>
-      <input type="password" id="oldPassInput" placeholder="Current Password">
-      <input type="password" id="newPassInput" placeholder="New Password">
-      <input type="password" id="confirmPassInput" placeholder="Confirm New Password">
-      <button id="changePassBtn" class="btn-primary" onclick="submitPasswordChange()">Update Password</button>
-      <div id="passModalMsg" class="modal-msg"></div>
     </div>
   </div>
 
@@ -355,7 +312,6 @@
       <div class="sidebar-footer">
         <div class="user-row">
           <span class="user-info" id="userNameDisplay">User</span>
-          <button class="icon-btn" onclick="openPasswordModal()" title="Change Password">⚙️</button>
         </div>
         <button class="logout-btn" onclick="logout()">Logout</button>
       </div>
@@ -383,7 +339,7 @@
     </div>
   </div>
 
-  <!-- PrismJS for Highlighting -->
+  <!-- PrismJS for Syntax Highlighting -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
 
@@ -394,13 +350,27 @@
     let chats = [];
     let currentChatId = null;
 
-    async function apiCall(payload) {
-      const response = await fetch(SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      });
-      return await response.json();
+    async function apiCall(payload, retries = 2) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        return await response.json();
+      } catch (err) {
+        clearTimeout(timeoutId);
+        if (retries > 0) {
+          await new Promise(r => setTimeout(r, 1000));
+          return await apiCall(payload, retries - 1);
+        }
+        throw err;
+      }
     }
 
     async function attemptLogin() {
@@ -425,15 +395,12 @@
         if (res.status === "success") {
           currentUser = res.user;
 
-          // 1. Hide Login Screen
           document.getElementById("loginOverlay").style.display = "none";
 
-          // 2. Show Animated Welcome Overlay
           const welcomeOverlay = document.getElementById("welcomeOverlay");
           document.getElementById("welcomeText").innerText = "Welcome, " + currentUser.name + "!";
           welcomeOverlay.classList.add("show");
 
-          // 3. Fast transition to main dashboard after 2 seconds
           setTimeout(() => {
             welcomeOverlay.classList.remove("show");
             document.getElementById("appContainer").style.visibility = "visible";
@@ -460,72 +427,6 @@
       document.getElementById("loginOverlay").style.display = "flex";
       document.getElementById("loginEmail").value = "";
       document.getElementById("loginPass").value = "";
-    }
-
-    function openPasswordModal() {
-      document.getElementById("oldPassInput").value = "";
-      document.getElementById("newPassInput").value = "";
-      document.getElementById("confirmPassInput").value = "";
-      document.getElementById("passModalMsg").style.display = "none";
-      document.getElementById("passwordModal").style.display = "flex";
-    }
-
-    function closePasswordModal() {
-      document.getElementById("passwordModal").style.display = "none";
-    }
-
-    async function submitPasswordChange() {
-      const oldPass = document.getElementById("oldPassInput").value;
-      const newPass = document.getElementById("newPassInput").value;
-      const confirmPass = document.getElementById("confirmPassInput").value;
-      const msgDiv = document.getElementById("passModalMsg");
-      const btn = document.getElementById("changePassBtn");
-
-      msgDiv.style.display = "none";
-
-      if (!oldPass || !newPass || !confirmPass) {
-        msgDiv.style.color = "#ef4444";
-        msgDiv.innerText = "Please fill in all password fields.";
-        msgDiv.style.display = "block";
-        return;
-      }
-
-      if (newPass !== confirmPass) {
-        msgDiv.style.color = "#ef4444";
-        msgDiv.innerText = "New passwords do not match!";
-        msgDiv.style.display = "block";
-        return;
-      }
-
-      btn.innerText = "Updating...";
-      btn.disabled = true;
-
-      try {
-        const res = await apiCall({
-          action: "changePassword",
-          email: currentUser.email,
-          oldPassword: oldPass,
-          newPassword: newPass
-        });
-
-        if (res.status === "success") {
-          msgDiv.style.color = "#10b981";
-          msgDiv.innerText = res.message;
-          msgDiv.style.display = "block";
-          setTimeout(() => closePasswordModal(), 1500);
-        } else {
-          msgDiv.style.color = "#ef4444";
-          msgDiv.innerText = res.message;
-          msgDiv.style.display = "block";
-        }
-      } catch (err) {
-        msgDiv.style.color = "#ef4444";
-        msgDiv.innerText = "Error updating password.";
-        msgDiv.style.display = "block";
-      } finally {
-        btn.innerText = "Update Password";
-        btn.disabled = false;
-      }
     }
 
     function toggleTheme() {
@@ -603,33 +504,51 @@
 
     async function sendMessage() {
       const input = document.getElementById("userInput");
+      const sendBtn = document.querySelector(".send-btn");
       const msgText = input.value.trim();
       if (!msgText) return;
 
       input.value = "";
+      sendBtn.disabled = true;
+
       renderMessageUI("user", msgText);
       saveToLocalHistory("user", msgText);
+
+      const container = document.getElementById("messagesContainer");
+      const loadingDiv = document.createElement("div");
+      loadingDiv.className = "msg bot temp-loading";
+      loadingDiv.innerText = "Thinking...";
+      container.appendChild(loadingDiv);
+      container.scrollTop = container.scrollHeight;
 
       try {
         const res = await apiCall({
           action: "processMessage",
           message: msgText,
-          userName: currentUser.name
+          userName: currentUser ? currentUser.name : "User"
         });
 
-        renderMessageUI("bot", res.text, res.sql);
-        saveToLocalHistory("bot", res.text, res.sql);
+        document.querySelectorAll(".temp-loading").forEach(el => el.remove());
 
-        const currentChat = chats.find(c => c.chatId === currentChatId);
-        if (currentChat && currentChat.title === "New Chat") {
-          currentChat.title = msgText.substring(0, 20) + "...";
-          renderHistoryList();
+        if (res && res.text) {
+          renderMessageUI("bot", res.text, res.sql);
+          saveToLocalHistory("bot", res.text, res.sql);
+
+          const currentChat = chats.find(c => c.chatId === currentChatId);
+          if (currentChat && currentChat.title === "New Chat") {
+            currentChat.title = msgText.substring(0, 20) + "...";
+            renderHistoryList();
+          }
+          saveChatToBackend(currentChat);
+        } else {
+          renderMessageUI("bot", "No response received from server.");
         }
 
-        saveChatToBackend(currentChat);
-
       } catch (err) {
-        renderMessageUI("bot", "Sorry, error connecting to server.");
+        document.querySelectorAll(".temp-loading").forEach(el => el.remove());
+        renderMessageUI("bot", "Connection error. Please try again.");
+      } finally {
+        sendBtn.disabled = false;
       }
     }
 

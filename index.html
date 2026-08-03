@@ -5,17 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Triage SQL Assistant</title>
 
+  <!-- Google Fonts & Prism CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 
   <style>
     :root {
       --primary-orange: #ff5500;
       --primary-hover: #e04b00;
-      --bg-color: #0b0f19;
-      --card-bg: #111827;
+      --cyan-glow: #00f0ff;
+      --bg-color: #070a12;
+      --card-bg: rgba(17, 24, 39, 0.85);
       --sidebar-bg: #0d121f;
       --text-primary: #f3f4f6;
       --text-secondary: #9ca3af;
@@ -40,133 +42,292 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; transition: background-color 0.2s, color 0.2s; }
     body { background-color: var(--bg-color); color: var(--text-primary); height: 100vh; display: flex; overflow: hidden; }
 
-    /* BACKGROUND GRAPHICS */
+    /* ---------------------------------------------------- */
+    /* HIGH-TECH SQL & CYBER BACKGROUND ANIMATIONS          */
+    /* ---------------------------------------------------- */
     .login-bg-graphics {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; opacity: 0.3; z-index: 1; overflow: hidden;
-    }
-    .anim-pos-1 { position: absolute; top: 6%; left: 6%; width: 220px; height: 220px; animation: floatAnim 6s ease-in-out infinite alternate; }
-    .anim-pos-2 { position: absolute; top: 8%; right: 8%; width: 240px; height: 180px; }
-    .anim-pos-3 { position: absolute; bottom: 8%; left: 7%; width: 260px; height: 160px; }
-    .anim-pos-4 { position: absolute; bottom: 8%; right: 8%; width: 200px; height: 200px; animation: rotatePie 20s linear infinite; }
-
-    @keyframes floatAnim { 0% { transform: translateY(-8px); } 100% { transform: translateY(12px); } }
-    @keyframes rotatePie { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    .bar-anim { transform-origin: bottom; animation: barGrow 2s ease-in-out infinite alternate; }
-    .b1 { animation-delay: 0.1s; } .b2 { animation-delay: 0.4s; } .b3 { animation-delay: 0.7s; }
-    @keyframes barGrow { 0% { transform: scaleY(0.3); } 100% { transform: scaleY(1); } }
-
-    .data-grid-dots {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background-image: radial-gradient(rgba(255, 85, 0, 0.18) 1.5px, transparent 1.5px);
-      background-size: 36px 36px;
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; opacity: 0.6; z-index: 1;
+      overflow: hidden;
     }
 
-    /* LOGIN & MODAL */
+    /* 1. Hologram Orbit (Top Left / Mid Left) */
+    .cyber-node-1 { position: absolute; top: 10%; left: 8%; width: 280px; height: 280px; }
+    .hud-ring { transform-origin: center; animation: spinClockwise 18s linear infinite; }
+    .hud-ring-inner { transform-origin: center; animation: spinCounter 12s linear infinite; }
+    
+    /* 2. Database Cloud Sync Node (Top Right) */
+    .cyber-node-2 { position: absolute; top: 12%; right: 8%; width: 260px; height: 220px; animation: floatPulse 5s ease-in-out infinite alternate; }
+
+    /* 3. Connected Network Mesh (Bottom Left) */
+    .cyber-node-3 { position: absolute; bottom: 8%; left: 8%; width: 320px; height: 200px; }
+
+    /* 4. Glowing Data Ring (Bottom Right) */
+    .cyber-node-4 { position: absolute; bottom: 8%; right: 8%; width: 240px; height: 240px; }
+
+    /* Keyframe Animations */
+    @keyframes spinClockwise {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes spinCounter {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
+    }
+
+    @keyframes floatPulse {
+      0% { transform: translateY(0px) scale(0.98); }
+      100% { transform: translateY(-12px) scale(1.02); }
+    }
+
+    /* Pulse effects for Nodes */
+    .pulse-node { animation: nodeGlow 2s ease-in-out infinite alternate; }
+    .p2 { animation-delay: 0.6s; }
+    .p3 { animation-delay: 1.2s; }
+
+    @keyframes nodeGlow {
+      0% { fill: #ff5500; r: 4; filter: drop-shadow(0 0 2px #ff5500); }
+      100% { fill: var(--cyan-glow); r: 7; filter: drop-shadow(0 0 10px var(--cyan-glow)); }
+    }
+
+    .data-stream-line { stroke-dasharray: 6, 10; animation: streamFlow 3s linear infinite; }
+    @keyframes streamFlow {
+      from { stroke-dashoffset: 32; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* Grid Overlay */
+    .cyber-grid {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(rgba(255, 85, 0, 0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 85, 0, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* ---------------------------------------------------- */
+    /* PURE CSS SPINNER FOR WELCOME OVERLAY                 */
+    /* ---------------------------------------------------- */
+    .loader-ring {
+      width: 50px; height: 50px;
+      border: 4px solid rgba(255, 85, 0, 0.15);
+      border-top: 4px solid var(--primary-orange);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      box-shadow: 0 0 15px rgba(255, 85, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* LOGIN SCREEN & MODALS */
     #loginOverlay, .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(11, 15, 25, 0.94); backdrop-filter: blur(8px);
+      background: rgba(7, 10, 18, 0.88); backdrop-filter: blur(10px);
       display: flex; align-items: center; justify-content: center; z-index: 999;
     }
     .login-box, .modal-box {
-      background: var(--card-bg); padding: 32px; border-radius: 16px; border: 1px solid var(--border-color);
-      width: 100%; max-width: 380px; text-align: center; position: relative; z-index: 2;
+      background: var(--card-bg); padding: 36px; border-radius: 16px; border: 1px solid rgba(255, 85, 0, 0.3);
+      width: 100%; max-width: 380px; text-align: center; box-shadow: 0 0 30px rgba(255, 85, 0, 0.15);
+      position: relative; z-index: 2;
     }
-    .login-box h2, .modal-box h3 { margin-bottom: 20px; font-size: 20px; }
+    .login-box h2, .modal-box h3 { margin-bottom: 20px; font-size: 20px; color: var(--text-primary); font-weight: 700; letter-spacing: 0.5px; }
     .login-box input, .modal-box input {
-      width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--border-color);
-      background: var(--bg-color); color: var(--text-primary); outline: none;
+      width: 100%; padding: 12px; margin-bottom: 14px; border-radius: 8px; border: 1px solid var(--border-color);
+      background: rgba(5, 8, 17, 0.8); color: var(--text-primary); outline: none; font-size: 14px;
     }
+    .login-box input:focus { border-color: var(--primary-orange); box-shadow: 0 0 8px rgba(255, 85, 0, 0.4); }
     .login-box button, .modal-box button.btn-primary {
       width: 100%; padding: 12px; background: var(--primary-orange); color: white; border: none;
-      border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 8px;
+      border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 8px; box-shadow: 0 4px 15px rgba(255, 85, 0, 0.4);
     }
-    .reset-pwd-btn {
-      background: none; border: none; color: var(--text-secondary);
-      font-size: 12px; cursor: pointer; margin-top: 14px; text-decoration: underline;
-    }
-    .reset-pwd-btn:hover { color: var(--primary-orange); }
+    .login-box button:hover, .modal-box button.btn-primary:hover { background: var(--primary-hover); }
     .login-error, .modal-msg { font-size: 13px; margin-top: 10px; display: none; }
-    .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: var(--text-secondary); font-size: 18px; cursor: pointer; }
+    
+    .modal-close {
+      position: absolute; top: 12px; right: 16px; background: none; border: none;
+      color: var(--text-secondary); font-size: 18px; cursor: pointer;
+    }
 
-    /* LOADING SPINNER OVERLAY (FIX FOR TIMEOUT) */
+    /* WELCOME SCREEN OVERLAY */
     #welcomeOverlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: var(--bg-color); display: flex; flex-direction: column;
-      align-items: center; justify-content: center; z-index: 10000; display: none;
+      background: var(--bg-color);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 10000; opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    .loader-ring {
-      width: 50px; height: 50px; border: 4px solid rgba(255, 85, 0, 0.15);
-      border-top: 4px solid var(--primary-orange); border-radius: 50%;
-      animation: spin 0.8s linear infinite; margin-bottom: 16px;
-    }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    #welcomeOverlay.show { opacity: 1; visibility: visible; }
+    .welcome-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .welcome-card h1 { font-size: 30px; color: var(--text-primary); font-weight: 700; margin-top: 10px; }
+    .welcome-card p { color: var(--primary-orange); font-size: 15px; margin-top: 6px; }
 
-    /* MAIN APP LAYOUT */
+    /* MAIN LAYOUT */
     #appContainer { display: flex; width: 100%; height: 100vh; visibility: hidden; }
-    .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 16px; }
-    .new-chat-btn { width: 100%; padding: 10px; background: var(--primary-orange); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 20px; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color);
+      display: flex; flex-direction: column; justify-content: space-between; padding: 16px;
+    }
+    .new-chat-btn {
+      width: 100%; padding: 10px; background: var(--primary-orange); color: white; border: none;
+      border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 20px;
+    }
+    .new-chat-btn:hover { background: var(--primary-hover); }
+    
     .history-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-    .history-item { padding: 10px; border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center; }
-    .history-item:hover, .history-item.active { background: var(--card-bg); color: var(--text-primary); }
-    .history-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .delete-btn { background: transparent; border: none; color: var(--text-secondary); font-size: 14px; cursor: pointer; display: none; }
+    .history-item {
+      padding: 10px; border-radius: 8px; border: 1px solid transparent; cursor: pointer;
+      font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .history-item:hover, .history-item.active {
+      background: var(--card-bg); border-color: var(--border-color); color: var(--text-primary);
+    }
+    .history-title { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+    .delete-btn {
+      background: transparent; border: none; color: var(--text-secondary); font-size: 14px;
+      cursor: pointer; padding: 2px 6px; border-radius: 4px; display: none;
+    }
     .history-item:hover .delete-btn { display: block; }
+    .delete-btn:hover { color: #ef4444; background: rgba(239,68,68,0.1); }
 
     .sidebar-footer { border-top: 1px solid var(--border-color); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
     .user-row { display: flex; justify-content: space-between; align-items: center; }
     .user-info { font-weight: 600; font-size: 13px; }
-    .icon-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 15px; }
+    .icon-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 14px; }
+    .icon-btn:hover { color: var(--text-primary); }
     .logout-btn { background: none; border: none; color: var(--primary-orange); cursor: pointer; font-size: 13px; font-weight: 600; text-align: left; }
 
+    /* MAIN CHAT AREA */
     .main-chat { flex: 1; display: flex; flex-direction: column; background: var(--bg-color); }
-    .top-bar { height: 60px; padding: 0 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--sidebar-bg); }
-    .theme-toggle { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-primary); padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+    
+    .top-bar {
+      height: 60px; padding: 0 24px; border-bottom: 1px solid var(--border-color);
+      display: flex; justify-content: space-between; align-items: center; background: var(--sidebar-bg);
+    }
+    .top-bar h3 { font-size: 16px; font-weight: 600; }
+    .top-bar p { font-size: 12px; color: var(--text-secondary); }
+    
+    .theme-toggle {
+      background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-primary);
+      padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer;
+    }
+
     .messages-container { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+
     .msg { max-width: 80%; padding: 14px 18px; border-radius: 12px; font-size: 14px; line-height: 1.5; }
-    .msg.user { align-self: flex-end; background: var(--user-msg-bg); color: white; }
-    .msg.bot { align-self: flex-start; background: var(--bot-msg-bg); border: 1px solid var(--border-color); }
-    .msg-author { font-weight: 700; margin-bottom: 4px; font-size: 11px; opacity: 0.8; }
+    .msg.user { align-self: flex-end; background: var(--user-msg-bg); color: white; border-bottom-right-radius: 2px; }
+    .msg.bot { align-self: flex-start; background: var(--bot-msg-bg); border: 1px solid var(--border-color); border-bottom-left-radius: 2px; }
 
-    .sql-box { margin-top: 10px; background: var(--code-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden; }
-    .sql-header { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 6px 12px; font-size: 11px; }
-    .copy-btn { background: var(--primary-orange); color: white; border: none; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
-    pre[class*="language-"] { margin: 0 !important; padding: 12px !important; }
+    .msg-author { font-weight: 700; margin-bottom: 6px; font-size: 12px; opacity: 0.8; }
 
+    /* SQL CODE BLOCK */
+    .sql-box {
+      margin-top: 12px; background: var(--code-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden;
+    }
+    .sql-header {
+      display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05);
+      padding: 6px 12px; font-size: 11px; color: var(--text-secondary); border-bottom: 1px solid var(--border-color);
+    }
+    .copy-btn {
+      background: var(--primary-orange); color: white; border: none; padding: 3px 8px;
+      border-radius: 4px; font-size: 11px; cursor: pointer;
+    }
+    .copy-btn:hover { background: var(--primary-hover); }
+    pre[class*="language-"] { margin: 0 !important; padding: 12px !important; background: transparent !important; }
+
+    /* INPUT AREA */
     .input-area { padding: 16px 24px; border-top: 1px solid var(--border-color); background: var(--sidebar-bg); }
     .input-box { display: flex; gap: 12px; }
-    .input-box textarea { flex: 1; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); padding: 12px; font-size: 14px; resize: none; height: 48px; outline: none; }
-    .send-btn { background: var(--primary-orange); color: white; border: none; padding: 0 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    .input-box textarea {
+      flex: 1; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px;
+      color: var(--text-primary); padding: 12px; font-size: 14px; resize: none; height: 48px; outline: none;
+    }
+    .send-btn {
+      background: var(--primary-orange); color: white; border: none; padding: 0 24px;
+      border-radius: 8px; font-weight: 600; cursor: pointer;
+    }
+    .send-btn:hover { background: var(--primary-hover); }
     .footer-note { font-size: 11px; color: var(--text-secondary); text-align: center; margin-top: 8px; }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN SCREEN -->
+  <!-- LOGIN OVERLAY WITH CYBER SQL ANIMATIONS -->
   <div id="loginOverlay">
+    
     <div class="login-bg-graphics">
-      <div class="data-grid-dots"></div>
-      <svg class="anim-pos-1" viewBox="0 0 100 100" fill="none"><g stroke="#ff5500" stroke-width="2"><ellipse cx="50" cy="20" rx="35" ry="10" fill="#111827"/><path d="M15 20 v20 c0 5.5 15.6 10 35 10 s35 -4.5 35 -10 v-20" fill="#111827"/><path d="M15 40 v20 c0 5.5 15.6 10 35 10 s35 -4.5 35 -10 v-20" fill="#111827"/></g></svg>
-      <svg class="anim-pos-2" viewBox="0 0 160 100" fill="none"><g fill="#ff5500"><rect class="bar-anim b1" x="10" y="20" width="16" height="70" rx="3" /><rect class="bar-anim b2" x="38" y="10" width="16" height="80" rx="3" /><rect class="bar-anim b3" x="66" y="40" width="16" height="50" rx="3" /></g></svg>
+      <div class="cyber-grid"></div>
+
+      <!-- 1. Hologram SQL Orbit (Top Left) -->
+      <svg class="cyber-node-1" viewBox="0 0 200 200" fill="none">
+        <circle class="hud-ring" cx="100" cy="100" r="80" stroke="#ff5500" stroke-width="1.5" stroke-dasharray="10 15" opacity="0.6"/>
+        <circle class="hud-ring-inner" cx="100" cy="100" r="60" stroke="#00f0ff" stroke-width="2" stroke-dasharray="40 20 10 5" opacity="0.5"/>
+        <text x="100" y="108" fill="#ff5500" font-size="22" font-family="'Fira Code', monospace" font-weight="bold" text-anchor="middle" filter="drop-shadow(0 0 8px #ff5500)">SQL</text>
+      </svg>
+
+      <!-- 2. Cloud Database Sync Node (Top Right) -->
+      <svg class="cyber-node-2" viewBox="0 0 200 160" fill="none">
+        <!-- Database Stacks -->
+        <g stroke="#ff5500" stroke-width="2" opacity="0.8">
+          <ellipse cx="140" cy="40" rx="30" ry="8" fill="#070a12"/>
+          <path d="M110 40 v20 c0 4.4 13.4 8 30 8 s30 -3.6 30 -8 v-20" />
+          <path d="M110 60 v20 c0 4.4 13.4 8 30 8 s30 -3.6 30 -8 v-20" />
+        </g>
+        <!-- Cloud Node -->
+        <path d="M40 90 A25 25 0 0 1 85 75 A30 30 0 0 1 125 90 A20 20 0 0 1 120 120 L45 120 A20 20 0 0 1 40 90 Z" fill="#070a12" stroke="#00f0ff" stroke-width="2" opacity="0.7"/>
+        <!-- Connection Line -->
+        <path d="M90 90 L125 60" stroke="#ff5500" stroke-width="2" class="data-stream-line"/>
+      </svg>
+
+      <!-- 3. Connected SQL Network Nodes (Bottom Left) -->
+      <svg class="cyber-node-3" viewBox="0 0 260 160" fill="none">
+        <path d="M20 130 L80 50 L160 100 L240 30" stroke="#ff5500" stroke-width="2" opacity="0.4"/>
+        <path d="M20 130 L160 100" stroke="#00f0ff" stroke-width="1.5" class="data-stream-line"/>
+        
+        <circle class="pulse-node" cx="20" cy="130" r="5"/>
+        <circle class="pulse-node p2" cx="80" cy="50" r="5"/>
+        <circle class="pulse-node p3" cx="160" cy="100" r="5"/>
+        <circle class="pulse-node p2" cx="240" cy="30" r="5"/>
+
+        <text x="80" y="35" fill="#9ca3af" font-size="10" font-family="monospace">SELECT *</text>
+        <text x="160" y="120" fill="#9ca3af" font-size="10" font-family="monospace">JOIN_TABLE</text>
+      </svg>
+
+      <!-- 4. Cyber Pie / Radar Scanner (Bottom Right) -->
+      <svg class="cyber-node-4" viewBox="0 0 180 180" fill="none">
+        <circle cx="90" cy="90" r="70" stroke="#ff5500" stroke-width="1" opacity="0.3"/>
+        <circle cx="90" cy="90" r="45" stroke="#00f0ff" stroke-width="1" stroke-dasharray="6 6" opacity="0.5"/>
+        <path d="M90 90 L90 20 A70 70 0 0 1 160 90 Z" fill="#ff5500" opacity="0.25"/>
+        <line x1="90" y1="90" x2="150" y2="40" stroke="#00f0ff" stroke-width="2"/>
+        <circle cx="150" cy="40" r="4" fill="#00f0ff"/>
+      </svg>
+
     </div>
 
+    <!-- LOGIN FORM BOX -->
     <div class="login-box">
       <h2>Triage SQL Workspace</h2>
       <input type="email" id="loginEmail" placeholder="email@oxiliry.com">
       <input type="password" id="loginPass" placeholder="Password">
       <button id="loginBtn" onclick="attemptLogin()">Login</button>
-      <br>
-      <button type="button" class="reset-pwd-btn" onclick="resetPassword()">Forgot or Reset Password?</button>
       <div id="loginError" class="login-error"></div>
     </div>
   </div>
 
-  <!-- INITIALIZATION OVERLAY (3-SECOND PAUSE PREVENTS TIMEOUT ERROR) -->
+  <!-- WELCOME SCREEN OVERLAY WITH SPINNER -->
   <div id="welcomeOverlay">
-    <div class="loader-ring"></div>
-    <h2 id="welcomeText" style="color: var(--text-primary);">Logging in...</h2>
-    <p style="color: var(--primary-orange); font-size: 14px; margin-top: 6px;">Initializing Secure Connection...</p>
+    <div class="welcome-card">
+      <div class="loader-ring"></div>
+      <h1 id="welcomeText">Welcome!</h1>
+      <p>Initializing SQL Assistant Workspace...</p>
+    </div>
   </div>
 
   <!-- CHANGE PASSWORD MODAL -->
@@ -184,21 +345,23 @@
 
   <!-- MAIN APP CONTAINER -->
   <div id="appContainer">
+    <!-- SIDEBAR -->
     <div class="sidebar">
       <div>
         <button class="new-chat-btn" onclick="startNewChat()">+ New Chat</button>
         <div class="history-list" id="historyList"></div>
       </div>
+
       <div class="sidebar-footer">
         <div class="user-row">
           <span class="user-info" id="userNameDisplay">User</span>
-          <!-- GEAR SIGN FOR CHANGE PASSWORD -->
           <button class="icon-btn" onclick="openPasswordModal()" title="Change Password">⚙️</button>
         </div>
         <button class="logout-btn" onclick="logout()">Logout</button>
       </div>
     </div>
 
+    <!-- CHAT WORKSPACE -->
     <div class="main-chat">
       <div class="top-bar">
         <div>
@@ -207,7 +370,9 @@
         </div>
         <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark / ☀️ Light</button>
       </div>
+
       <div class="messages-container" id="messagesContainer"></div>
+
       <div class="input-area">
         <div class="input-box">
           <textarea id="userInput" placeholder="Write here something..." onkeydown="handleKeyPress(event)"></textarea>
@@ -218,110 +383,83 @@
     </div>
   </div>
 
+  <!-- PrismJS for Highlighting -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
 
   <script>
-    // URL TO YOUR GOOGLE APPS SCRIPT WEB APP
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSufITdeq53VYP2u4cH5FLMBZHxPOa5YvWUoZEzHSS5A1N1WXi6m_IzkipVcWCZLjQ/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSufITdeq53VYP2u4cH5FLMBZHxPOa5YvWUoZEzHSS5A1N1WXi6m_IzkipVcWCZLjQ/exec";
 
     let currentUser = null;
     let chats = [];
     let currentChatId = null;
 
     async function apiCall(payload) {
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(payload)
-        });
-        if (!response.ok) throw new Error("HTTP error " + response.status);
-        return await response.json();
-      } catch (error) {
-        console.error("API Error:", error);
-        return { status: "error", message: "Connection error. Please try again." };
-      }
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      return await response.json();
     }
 
     async function attemptLogin() {
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPass").value.trim();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPass").value;
       const errorDiv = document.getElementById("loginError");
       const btn = document.getElementById("loginBtn");
 
       errorDiv.style.display = "none";
       if (!email || !password) {
-        errorDiv.innerText = "Please enter both Email and Password.";
+        errorDiv.innerText = "Please fill in all fields.";
         errorDiv.style.display = "block";
         return;
       }
 
-      btn.innerText = "Authenticating...";
+      btn.innerText = "Logging in...";
       btn.disabled = true;
 
-      const res = await apiCall({ action: "login", email: email, password: password });
+      try {
+        const res = await apiCall({ action: "login", email: email, password: password });
 
-      if (res.status === "success") {
-        currentUser = res.user;
-        
-        // Hide Login & Show Loader Overlay
-        document.getElementById("loginOverlay").style.display = "none";
-        const welcomeOverlay = document.getElementById("welcomeOverlay");
-        document.getElementById("welcomeText").innerText = "Welcome, " + currentUser.name;
-        welcomeOverlay.style.display = "flex";
+        if (res.status === "success") {
+          currentUser = res.user;
 
-        // 3-SECOND SAFETY PAUSE (Ensures backend socket connection is fresh)
-        setTimeout(async () => {
-          document.getElementById("userNameDisplay").innerText = currentUser.name;
-          document.getElementById("appContainer").style.visibility = "visible";
-          welcomeOverlay.style.display = "none";
-          await loadChatHistory();
-        }, 3000);
+          // 1. Hide Login Screen
+          document.getElementById("loginOverlay").style.display = "none";
 
-      } else {
-        errorDiv.innerText = res.message;
+          // 2. Show Animated Welcome Overlay
+          const welcomeOverlay = document.getElementById("welcomeOverlay");
+          document.getElementById("welcomeText").innerText = "Welcome, " + currentUser.name + "!";
+          welcomeOverlay.classList.add("show");
+
+          // 3. Fast transition to main dashboard after 2 seconds
+          setTimeout(() => {
+            welcomeOverlay.classList.remove("show");
+            document.getElementById("appContainer").style.visibility = "visible";
+            document.getElementById("userNameDisplay").innerText = currentUser.name;
+            loadChatHistory();
+          }, 2000);
+
+        } else {
+          errorDiv.innerText = res.message || "Invalid login credentials.";
+          errorDiv.style.display = "block";
+        }
+      } catch (err) {
+        errorDiv.innerText = "Connection error. Please check your network.";
         errorDiv.style.display = "block";
+      } finally {
         btn.innerText = "Login";
         btn.disabled = false;
       }
-    }
-
-    async function resetPassword() {
-      const email = document.getElementById("loginEmail").value.trim();
-      const errorDiv = document.getElementById("loginError");
-      errorDiv.style.display = "none";
-
-      if (!email) {
-        errorDiv.innerText = "Please type your email address above first.";
-        errorDiv.style.display = "block";
-        return;
-      }
-
-      const btn = document.querySelector(".reset-pwd-btn");
-      btn.innerText = "Sending Email...";
-      btn.disabled = true;
-
-      const res = await apiCall({ action: "resetPassword", email: email });
-
-      if (res.status === "success") {
-        alert(res.message);
-        errorDiv.innerText = "";
-      } else {
-        errorDiv.innerText = res.message;
-        errorDiv.style.display = "block";
-      }
-
-      btn.innerText = "Forgot or Reset Password?";
-      btn.disabled = false;
     }
 
     function logout() {
       currentUser = null;
       document.getElementById("appContainer").style.visibility = "hidden";
       document.getElementById("loginOverlay").style.display = "flex";
-      document.getElementById("loginBtn").innerText = "Login";
-      document.getElementById("loginBtn").disabled = false;
+      document.getElementById("loginEmail").value = "";
+      document.getElementById("loginPass").value = "";
     }
 
     function openPasswordModal() {
@@ -341,54 +479,73 @@
       const newPass = document.getElementById("newPassInput").value;
       const confirmPass = document.getElementById("confirmPassInput").value;
       const msgDiv = document.getElementById("passModalMsg");
+      const btn = document.getElementById("changePassBtn");
 
       msgDiv.style.display = "none";
 
       if (!oldPass || !newPass || !confirmPass) {
-        msgDiv.innerText = "All fields required.";
         msgDiv.style.color = "#ef4444";
+        msgDiv.innerText = "Please fill in all password fields.";
         msgDiv.style.display = "block";
         return;
       }
 
       if (newPass !== confirmPass) {
-        msgDiv.innerText = "New passwords do not match.";
         msgDiv.style.color = "#ef4444";
+        msgDiv.innerText = "New passwords do not match!";
         msgDiv.style.display = "block";
         return;
       }
 
-      const res = await apiCall({
-        action: "changePassword",
-        email: currentUser.email,
-        oldPassword: oldPass,
-        newPassword: newPass
-      });
+      btn.innerText = "Updating...";
+      btn.disabled = true;
 
-      if (res.status === "success") {
-        msgDiv.innerText = res.message;
-        msgDiv.style.color = "#10b981";
-        msgDiv.style.display = "block";
-        setTimeout(closePasswordModal, 1500);
-      } else {
-        msgDiv.innerText = res.message;
+      try {
+        const res = await apiCall({
+          action: "changePassword",
+          email: currentUser.email,
+          oldPassword: oldPass,
+          newPassword: newPass
+        });
+
+        if (res.status === "success") {
+          msgDiv.style.color = "#10b981";
+          msgDiv.innerText = res.message;
+          msgDiv.style.display = "block";
+          setTimeout(() => closePasswordModal(), 1500);
+        } else {
+          msgDiv.style.color = "#ef4444";
+          msgDiv.innerText = res.message;
+          msgDiv.style.display = "block";
+        }
+      } catch (err) {
         msgDiv.style.color = "#ef4444";
+        msgDiv.innerText = "Error updating password.";
         msgDiv.style.display = "block";
+      } finally {
+        btn.innerText = "Update Password";
+        btn.disabled = false;
       }
     }
 
     function toggleTheme() {
-      const current = document.documentElement.getAttribute("data-theme");
-      document.documentElement.setAttribute("data-theme", current === "dark" ? "light" : "dark");
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", newTheme);
     }
 
     async function loadChatHistory() {
-      const res = await apiCall({ action: "getHistory", email: currentUser.email });
-      if (res.status === "success" && res.history.length > 0) {
-        chats = res.history;
+      try {
+        const res = await apiCall({ action: "getHistory", email: currentUser.email });
+        chats = res.history || [];
+
         renderHistoryList();
-        selectChat(chats[0].chatId);
-      } else {
+        if (chats.length > 0) {
+          selectChat(chats[0].chatId);
+        } else {
+          startNewChat();
+        }
+      } catch (e) {
         startNewChat();
       }
     }
@@ -400,18 +557,10 @@
         const item = document.createElement("div");
         item.className = `history-item ${c.chatId === currentChatId ? 'active' : ''}`;
         
-        const titleSpan = document.createElement("span");
-        titleSpan.className = "history-title";
-        titleSpan.innerText = c.title || 'New Chat';
-        titleSpan.onclick = () => selectChat(c.chatId);
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-btn";
-        deleteBtn.innerText = "🗑️";
-        deleteBtn.onclick = (e) => { e.stopPropagation(); deleteChat(c.chatId); };
-
-        item.appendChild(titleSpan);
-        item.appendChild(deleteBtn);
+        item.innerHTML = `
+          <span class="history-title" onclick="selectChat('${c.chatId}')">${c.title || 'New Chat'}</span>
+          <button class="delete-btn" onclick="deleteChat(event, '${c.chatId}')" title="Delete Chat">🗑️</button>
+        `;
         list.appendChild(item);
       });
     }
@@ -422,6 +571,7 @@
       const chat = chats.find(c => c.chatId === id);
       const container = document.getElementById("messagesContainer");
       container.innerHTML = "";
+
       if (chat && chat.messages) {
         chat.messages.forEach(m => renderMessageUI(m.role, m.text, m.sql));
       }
@@ -429,19 +579,26 @@
 
     function startNewChat() {
       currentChatId = "chat_" + Date.now();
-      document.getElementById("messagesContainer").innerHTML = "";
-      renderMessageUI("bot", `Hello ${currentUser.name}! How can I assist you with SQL today?`, null);
+      const newChat = { chatId: currentChatId, title: "New Chat", messages: [] };
+      chats.unshift(newChat);
+      selectChat(currentChatId);
     }
 
-    async function deleteChat(chatId) {
+    async function deleteChat(event, chatId) {
+      event.stopPropagation();
       if (!confirm("Are you sure you want to delete this chat?")) return;
-      const res = await apiCall({ action: "deleteChat", email: currentUser.email, chatId: chatId });
-      if (res.status === "success") {
-        chats = chats.filter(c => c.chatId !== chatId);
-        renderHistoryList();
-        if (chats.length > 0) selectChat(chats[0].chatId);
-        else startNewChat();
+
+      chats = chats.filter(c => c.chatId !== chatId);
+
+      if (chats.length > 0) {
+        selectChat(chats[0].chatId);
+      } else {
+        startNewChat();
       }
+
+      try {
+        await apiCall({ action: "deleteChat", email: currentUser.email, chatId: chatId });
+      } catch(e) {}
     }
 
     async function sendMessage() {
@@ -451,28 +608,51 @@
 
       input.value = "";
       renderMessageUI("user", msgText);
+      saveToLocalHistory("user", msgText);
 
-      const res = await apiCall({ action: "processMessage", message: msgText, userName: currentUser.name });
-      renderMessageUI("bot", res.text, res.sql);
+      try {
+        const res = await apiCall({
+          action: "processMessage",
+          message: msgText,
+          userName: currentUser.name
+        });
 
-      let currentChat = chats.find(c => c.chatId === currentChatId);
-      if (!currentChat) {
-        currentChat = { chatId: currentChatId, title: msgText.substring(0, 20) + '...', messages: [] };
-        chats.unshift(currentChat);
+        renderMessageUI("bot", res.text, res.sql);
+        saveToLocalHistory("bot", res.text, res.sql);
+
+        const currentChat = chats.find(c => c.chatId === currentChatId);
+        if (currentChat && currentChat.title === "New Chat") {
+          currentChat.title = msgText.substring(0, 20) + "...";
+          renderHistoryList();
+        }
+
+        saveChatToBackend(currentChat);
+
+      } catch (err) {
+        renderMessageUI("bot", "Sorry, error connecting to server.");
       }
+    }
 
-      currentChat.messages.push({ role: "user", text: msgText });
-      currentChat.messages.push({ role: "bot", text: res.text, sql: res.sql });
+    function saveToLocalHistory(role, text, sql = null) {
+      let chat = chats.find(c => c.chatId === currentChatId);
+      if (!chat) {
+        chat = { chatId: currentChatId, title: text.substring(0, 20) + "...", messages: [] };
+        chats.unshift(chat);
+      }
+      chat.messages.push({ role, text, sql });
+    }
 
-      renderHistoryList();
-
-      apiCall({
-        action: "saveChat",
-        email: currentUser.email,
-        chatId: currentChatId,
-        title: currentChat.title,
-        messages: currentChat.messages
-      });
+    async function saveChatToBackend(chat) {
+      if (!chat) return;
+      try {
+        await apiCall({
+          action: "saveChat",
+          email: currentUser.email,
+          chatId: chat.chatId,
+          title: chat.title,
+          messages: chat.messages
+        });
+      } catch(e) {}
     }
 
     function renderMessageUI(role, text, sql) {
@@ -480,17 +660,17 @@
       const msgDiv = document.createElement("div");
       msgDiv.className = `msg ${role}`;
 
-      let html = `<div class="msg-author">${role === 'user' ? 'You' : 'Assistant'}</div><div>${text}</div>`;
+      let html = `<div class="msg-author">${role === 'user' ? 'You:' : 'Assistant:'}</div>`;
+      html += `<div>${text.replace(/\n/g, '<br>')}</div>`;
 
       if (sql) {
-        const escapedSql = sql.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         html += `
           <div class="sql-box">
             <div class="sql-header">
               <span>SQL QUERY</span>
               <button class="copy-btn" onclick="copySql(this)">Copy</button>
             </div>
-            <pre><code class="language-sql">${escapedSql}</code></pre>
+            <pre><code class="language-sql">${escapeHtml(sql)}</code></pre>
           </div>
         `;
       }
@@ -498,7 +678,7 @@
       msgDiv.innerHTML = html;
       container.appendChild(msgDiv);
       container.scrollTop = container.scrollHeight;
-      if (sql) Prism.highlightAll();
+      Prism.highlightAll();
     }
 
     function copySql(btn) {
@@ -506,6 +686,10 @@
       navigator.clipboard.writeText(code);
       btn.innerText = "Copied!";
       setTimeout(() => btn.innerText = "Copy", 2000);
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
     function handleKeyPress(e) {

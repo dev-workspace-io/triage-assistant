@@ -42,47 +42,23 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; transition: background-color 0.2s, color 0.2s; }
     body { background-color: var(--bg-color); color: var(--text-primary); height: 100vh; display: flex; overflow: hidden; }
 
-    /* ---------------------------------------------------- */
-    /* HIGH-TECH SQL & CYBER BACKGROUND ANIMATIONS          */
-    /* ---------------------------------------------------- */
+    /* HIGH-TECH BACKGROUND ANIMATIONS */
     .login-bg-graphics {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; opacity: 0.6; z-index: 1;
-      overflow: hidden;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; opacity: 0.6; z-index: 1; overflow: hidden;
     }
 
-    /* 1. Hologram Orbit (Top Left / Mid Left) */
     .cyber-node-1 { position: absolute; top: 10%; left: 8%; width: 280px; height: 280px; }
     .hud-ring { transform-origin: center; animation: spinClockwise 18s linear infinite; }
     .hud-ring-inner { transform-origin: center; animation: spinCounter 12s linear infinite; }
-    
-    /* 2. Database Cloud Sync Node (Top Right) */
     .cyber-node-2 { position: absolute; top: 12%; right: 8%; width: 260px; height: 220px; animation: floatPulse 5s ease-in-out infinite alternate; }
-
-    /* 3. Connected Network Mesh (Bottom Left) */
     .cyber-node-3 { position: absolute; bottom: 8%; left: 8%; width: 320px; height: 200px; }
-
-    /* 4. Glowing Data Ring (Bottom Right) */
     .cyber-node-4 { position: absolute; bottom: 8%; right: 8%; width: 240px; height: 240px; }
 
-    /* Keyframe Animations */
-    @keyframes spinClockwise {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    @keyframes spinClockwise { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes spinCounter { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
+    @keyframes floatPulse { 0% { transform: translateY(0px) scale(0.98); } 100% { transform: translateY(-12px) scale(1.02); } }
 
-    @keyframes spinCounter {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(-360deg); }
-    }
-
-    @keyframes floatPulse {
-      0% { transform: translateY(0px) scale(0.98); }
-      100% { transform: translateY(-12px) scale(1.02); }
-    }
-
-    /* Pulse effects for Nodes */
     .pulse-node { animation: nodeGlow 2s ease-in-out infinite alternate; }
     .p2 { animation-delay: 0.6s; }
     .p3 { animation-delay: 1.2s; }
@@ -93,12 +69,8 @@
     }
 
     .data-stream-line { stroke-dasharray: 6, 10; animation: streamFlow 3s linear infinite; }
-    @keyframes streamFlow {
-      from { stroke-dashoffset: 32; }
-      to { stroke-dashoffset: 0; }
-    }
+    @keyframes streamFlow { from { stroke-dashoffset: 32; } to { stroke-dashoffset: 0; } }
 
-    /* Grid Overlay */
     .cyber-grid {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       background-image: linear-gradient(rgba(255, 85, 0, 0.05) 1px, transparent 1px),
@@ -106,25 +78,17 @@
       background-size: 50px 50px;
     }
 
-    /* ---------------------------------------------------- */
-    /* PURE CSS SPINNER FOR WELCOME OVERLAY                 */
-    /* ---------------------------------------------------- */
     .loader-ring {
       width: 50px; height: 50px;
       border: 4px solid rgba(255, 85, 0, 0.15);
       border-top: 4px solid var(--primary-orange);
-      border-radius: 50%;
-      animation: spin 0.9s linear infinite;
-      box-shadow: 0 0 15px rgba(255, 85, 0, 0.3);
-      margin-bottom: 20px;
+      border-radius: 50%; animation: spin 0.9s linear infinite;
+      box-shadow: 0 0 15px rgba(255, 85, 0, 0.3); margin-bottom: 20px;
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* LOGIN SCREEN & MODALS */
+    /* MODALS & OVERLAYS */
     #loginOverlay, .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(7, 10, 18, 0.88); backdrop-filter: blur(10px);
@@ -146,30 +110,25 @@
       border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 8px; box-shadow: 0 4px 15px rgba(255, 85, 0, 0.4);
     }
     .login-box button:hover, .modal-box button.btn-primary:hover { background: var(--primary-hover); }
-    .login-error, .modal-msg { font-size: 13px; margin-top: 10px; display: none; }
+    .login-error, .modal-msg { font-size: 13px; margin-top: 10px; display: none; color: #ef4444; }
     
     .modal-close {
       position: absolute; top: 12px; right: 16px; background: none; border: none;
       color: var(--text-secondary); font-size: 18px; cursor: pointer;
     }
 
-    /* WELCOME SCREEN OVERLAY */
     #welcomeOverlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: var(--bg-color);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      z-index: 10000; opacity: 0; visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      background: var(--bg-color); display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 10000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
     }
     #welcomeOverlay.show { opacity: 1; visibility: visible; }
     .welcome-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
     .welcome-card h1 { font-size: 30px; color: var(--text-primary); font-weight: 700; margin-top: 10px; }
     .welcome-card p { color: var(--primary-orange); font-size: 15px; margin-top: 6px; }
 
-    /* MAIN LAYOUT */
     #appContainer { display: flex; width: 100%; height: 100vh; visibility: hidden; }
 
-    /* SIDEBAR */
     .sidebar {
       width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color);
       display: flex; flex-direction: column; justify-content: space-between; padding: 16px;
@@ -204,7 +163,6 @@
     .icon-btn:hover { color: var(--text-primary); }
     .logout-btn { background: none; border: none; color: var(--primary-orange); cursor: pointer; font-size: 13px; font-weight: 600; text-align: left; }
 
-    /* MAIN CHAT AREA */
     .main-chat { flex: 1; display: flex; flex-direction: column; background: var(--bg-color); }
     
     .top-bar {
@@ -227,7 +185,6 @@
 
     .msg-author { font-weight: 700; margin-bottom: 6px; font-size: 12px; opacity: 0.8; }
 
-    /* SQL CODE BLOCK */
     .sql-box {
       margin-top: 12px; background: var(--code-bg); border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden;
     }
@@ -242,7 +199,6 @@
     .copy-btn:hover { background: var(--primary-hover); }
     pre[class*="language-"] { margin: 0 !important; padding: 12px !important; background: transparent !important; }
 
-    /* INPUT AREA */
     .input-area { padding: 16px 24px; border-top: 1px solid var(--border-color); background: var(--sidebar-bg); }
     .input-box { display: flex; gap: 12px; }
     .input-box textarea {
@@ -259,48 +215,34 @@
 </head>
 <body>
 
-  <!-- LOGIN OVERLAY WITH CYBER SQL ANIMATIONS -->
+  <!-- LOGIN OVERLAY -->
   <div id="loginOverlay">
-    
     <div class="login-bg-graphics">
       <div class="cyber-grid"></div>
-
-      <!-- 1. Hologram SQL Orbit (Top Left) -->
       <svg class="cyber-node-1" viewBox="0 0 200 200" fill="none">
         <circle class="hud-ring" cx="100" cy="100" r="80" stroke="#ff5500" stroke-width="1.5" stroke-dasharray="10 15" opacity="0.6"/>
         <circle class="hud-ring-inner" cx="100" cy="100" r="60" stroke="#00f0ff" stroke-width="2" stroke-dasharray="40 20 10 5" opacity="0.5"/>
         <text x="100" y="108" fill="#ff5500" font-size="22" font-family="'Fira Code', monospace" font-weight="bold" text-anchor="middle" filter="drop-shadow(0 0 8px #ff5500)">SQL</text>
       </svg>
-
-      <!-- 2. Cloud Database Sync Node (Top Right) -->
       <svg class="cyber-node-2" viewBox="0 0 200 160" fill="none">
-        <!-- Database Stacks -->
         <g stroke="#ff5500" stroke-width="2" opacity="0.8">
           <ellipse cx="140" cy="40" rx="30" ry="8" fill="#070a12"/>
           <path d="M110 40 v20 c0 4.4 13.4 8 30 8 s30 -3.6 30 -8 v-20" />
           <path d="M110 60 v20 c0 4.4 13.4 8 30 8 s30 -3.6 30 -8 v-20" />
         </g>
-        <!-- Cloud Node -->
         <path d="M40 90 A25 25 0 0 1 85 75 A30 30 0 0 1 125 90 A20 20 0 0 1 120 120 L45 120 A20 20 0 0 1 40 90 Z" fill="#070a12" stroke="#00f0ff" stroke-width="2" opacity="0.7"/>
-        <!-- Connection Line -->
         <path d="M90 90 L125 60" stroke="#ff5500" stroke-width="2" class="data-stream-line"/>
       </svg>
-
-      <!-- 3. Connected SQL Network Nodes (Bottom Left) -->
       <svg class="cyber-node-3" viewBox="0 0 260 160" fill="none">
         <path d="M20 130 L80 50 L160 100 L240 30" stroke="#ff5500" stroke-width="2" opacity="0.4"/>
         <path d="M20 130 L160 100" stroke="#00f0ff" stroke-width="1.5" class="data-stream-line"/>
-        
         <circle class="pulse-node" cx="20" cy="130" r="5"/>
         <circle class="pulse-node p2" cx="80" cy="50" r="5"/>
         <circle class="pulse-node p3" cx="160" cy="100" r="5"/>
         <circle class="pulse-node p2" cx="240" cy="30" r="5"/>
-
         <text x="80" y="35" fill="#9ca3af" font-size="10" font-family="monospace">SELECT *</text>
         <text x="160" y="120" fill="#9ca3af" font-size="10" font-family="monospace">JOIN_TABLE</text>
       </svg>
-
-      <!-- 4. Cyber Pie / Radar Scanner (Bottom Right) -->
       <svg class="cyber-node-4" viewBox="0 0 180 180" fill="none">
         <circle cx="90" cy="90" r="70" stroke="#ff5500" stroke-width="1" opacity="0.3"/>
         <circle cx="90" cy="90" r="45" stroke="#00f0ff" stroke-width="1" stroke-dasharray="6 6" opacity="0.5"/>
@@ -308,10 +250,8 @@
         <line x1="90" y1="90" x2="150" y2="40" stroke="#00f0ff" stroke-width="2"/>
         <circle cx="150" cy="40" r="4" fill="#00f0ff"/>
       </svg>
-
     </div>
 
-    <!-- LOGIN FORM BOX -->
     <div class="login-box">
       <h2>Triage SQL Workspace</h2>
       <input type="email" id="loginEmail" placeholder="email@oxiliry.com">
@@ -321,7 +261,7 @@
     </div>
   </div>
 
-  <!-- WELCOME SCREEN OVERLAY WITH SPINNER -->
+  <!-- WELCOME SCREEN OVERLAY -->
   <div id="welcomeOverlay">
     <div class="welcome-card">
       <div class="loader-ring"></div>
@@ -345,7 +285,6 @@
 
   <!-- MAIN APP CONTAINER -->
   <div id="appContainer">
-    <!-- SIDEBAR -->
     <div class="sidebar">
       <div>
         <button class="new-chat-btn" onclick="startNewChat()">+ New Chat</button>
@@ -361,7 +300,6 @@
       </div>
     </div>
 
-    <!-- CHAT WORKSPACE -->
     <div class="main-chat">
       <div class="top-bar">
         <div>
@@ -383,7 +321,6 @@
     </div>
   </div>
 
-  <!-- PrismJS for Highlighting -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
 
@@ -394,9 +331,12 @@
     let chats = [];
     let currentChatId = null;
 
+    // OPTIMIZED FAST API CALL WITH REDIRECT HANDLING
     async function apiCall(payload) {
       const response = await fetch(SCRIPT_URL, {
         method: "POST",
+        mode: "cors",
+        redirect: "follow",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload)
       });
@@ -422,27 +362,25 @@
       try {
         const res = await apiCall({ action: "login", email: email, password: password });
 
-        if (res.status === "success") {
+        if (res && res.status === "success") {
           currentUser = res.user;
 
-          // 1. Hide Login Screen
           document.getElementById("loginOverlay").style.display = "none";
 
-          // 2. Show Animated Welcome Overlay
           const welcomeOverlay = document.getElementById("welcomeOverlay");
           document.getElementById("welcomeText").innerText = "Welcome, " + currentUser.name + "!";
           welcomeOverlay.classList.add("show");
 
-          // 3. Fast transition to main dashboard after 2 seconds
+          // Reduced artificial lag from 2000ms to 400ms for fast transition
           setTimeout(() => {
             welcomeOverlay.classList.remove("show");
             document.getElementById("appContainer").style.visibility = "visible";
             document.getElementById("userNameDisplay").innerText = currentUser.name;
             loadChatHistory();
-          }, 2000);
+          }, 400);
 
         } else {
-          errorDiv.innerText = res.message || "Invalid login credentials.";
+          errorDiv.innerText = (res && res.message) ? res.message : "Invalid login credentials.";
           errorDiv.style.display = "block";
         }
       } catch (err) {
@@ -508,14 +446,14 @@
           newPassword: newPass
         });
 
-        if (res.status === "success") {
+        if (res && res.status === "success") {
           msgDiv.style.color = "#10b981";
           msgDiv.innerText = res.message;
           msgDiv.style.display = "block";
           setTimeout(() => closePasswordModal(), 1500);
         } else {
           msgDiv.style.color = "#ef4444";
-          msgDiv.innerText = res.message;
+          msgDiv.innerText = res ? res.message : "Error updating password.";
           msgDiv.style.display = "block";
         }
       } catch (err) {
@@ -537,7 +475,7 @@
     async function loadChatHistory() {
       try {
         const res = await apiCall({ action: "getHistory", email: currentUser.email });
-        chats = res.history || [];
+        chats = (res && res.history) ? res.history : [];
 
         renderHistoryList();
         if (chats.length > 0) {
@@ -617,17 +555,18 @@
           userName: currentUser.name
         });
 
-        renderMessageUI("bot", res.text, res.sql);
-        saveToLocalHistory("bot", res.text, res.sql);
+        if (res) {
+          renderMessageUI("bot", res.text, res.sql);
+          saveToLocalHistory("bot", res.text, res.sql);
 
-        const currentChat = chats.find(c => c.chatId === currentChatId);
-        if (currentChat && currentChat.title === "New Chat") {
-          currentChat.title = msgText.substring(0, 20) + "...";
-          renderHistoryList();
+          const currentChat = chats.find(c => c.chatId === currentChatId);
+          if (currentChat && currentChat.title === "New Chat") {
+            currentChat.title = msgText.substring(0, 20) + "...";
+            renderHistoryList();
+          }
+
+          saveChatToBackend(currentChat);
         }
-
-        saveChatToBackend(currentChat);
-
       } catch (err) {
         renderMessageUI("bot", "Sorry, error connecting to server.");
       }
@@ -661,7 +600,7 @@
       msgDiv.className = `msg ${role}`;
 
       let html = `<div class="msg-author">${role === 'user' ? 'You:' : 'Assistant:'}</div>`;
-      html += `<div>${text.replace(/\n/g, '<br>')}</div>`;
+      html += `<div>${text ? text.replace(/\n/g, '<br>') : ''}</div>`;
 
       if (sql) {
         html += `
@@ -689,7 +628,7 @@
     }
 
     function escapeHtml(text) {
-      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      return text ? text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : "";
     }
 
     function handleKeyPress(e) {

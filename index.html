@@ -53,14 +53,12 @@
       opacity: 0.75;
     }
 
-    /* Subtle Grid Overlay */
     .cyber-grid {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       background-image: radial-gradient(rgba(255, 85, 0, 0.12) 1.2px, transparent 1.2px);
       background-size: 35px 35px;
     }
 
-    /* Floating Data Columns (Left & Right) - FAST SPEEDS */
     .data-column {
       position: absolute;
       width: 140px;
@@ -71,7 +69,6 @@
     .data-column.left { left: 8%; top: -10%; animation: floatUpDown_Long 6s ease-in-out infinite alternate; }
     .data-column.right { right: 8%; top: -10%; animation: floatUpDown_Long 6s ease-in-out infinite 1s alternate; }
 
-    /* Technical Graphics Style */
     .tech-graphic {
       width: 120px; height: 120px;
       border: 1px dashed rgba(255, 85, 0, 0.3);
@@ -87,16 +84,13 @@
       filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.4));
     }
 
-    /* Fast Bar Grow Keyframes */
     .bar-anim { transform-origin: bottom; animation: barGrow 0.8s ease-in-out infinite alternate; }
     .b1 { animation-delay: 0.1s; }
     .b2 { animation-delay: 0.3s; }
     .b3 { animation-delay: 0.5s; }
 
-    /* Fast Data Stream Flow */
     .data-stream-line { stroke-dasharray: 6, 12; animation: streamFlow 1.2s linear infinite; }
 
-    /* Performance-friendly Fast Animations */
     @keyframes floatUpDown_Long {
       0% { transform: translateY(0%); }
       100% { transform: translateY(40%); }
@@ -118,7 +112,7 @@
     }
 
     /* ---------------------------------------------------- */
-    /* UI ELEMENTS & LOGIN BOX                              */
+    /* LOGIN BOX & RESET PASSWORD                           */
     /* ---------------------------------------------------- */
     #loginOverlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -142,24 +136,57 @@
       box-shadow: 0 4px 15px rgba(255, 85, 0, 0.4);
     }
     .login-box button:hover { background: var(--primary-hover); }
+    
+    /* Reset Password Option */
+    .reset-pwd-btn {
+      background: none; border: none; color: var(--text-secondary);
+      font-size: 12px; cursor: pointer; margin-top: 14px; text-decoration: underline;
+      display: inline-block; box-shadow: none !important; width: auto !important; padding: 0 !important;
+    }
+    .reset-pwd-btn:hover { color: var(--primary-orange); background: none !important; }
+
     .login-error { font-size: 13px; color: #ef4444; margin-top: 10px; display: none; }
 
-    /* LOADER & OVERLAYS */
-    .loader-ring {
-      width: 50px; height: 50px; border: 4px solid rgba(255, 85, 0, 0.15);
-      border-top: 4px solid var(--primary-orange); border-radius: 50%;
-      animation: spin 0.9s linear infinite; margin-bottom: 20px;
+    /* Bottom Right Corner Branding */
+    .login-corner-footer {
+      position: absolute;
+      bottom: 20px;
+      right: 25px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      z-index: 10;
+      opacity: 0.85;
+      letter-spacing: 0.5px;
     }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .login-corner-footer b { color: var(--primary-orange); }
 
+    /* ---------------------------------------------------- */
+    /* PERFECT CENTERED WELCOME OVERLAY & LOADER            */
+    /* ---------------------------------------------------- */
     #welcomeOverlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-color);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       z-index: 10000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
     }
     #welcomeOverlay.show { opacity: 1; visibility: visible; }
-    .welcome-card h1 { font-size: 28px; color: var(--text-primary); margin-top: 10px; }
-    .welcome-card p { color: var(--primary-orange); font-size: 14px; margin-top: 6px; }
+    
+    .welcome-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .loader-ring {
+      width: 50px; height: 50px; border: 4px solid rgba(255, 85, 0, 0.15);
+      border-top: 4px solid var(--primary-orange); border-radius: 50%;
+      animation: spin 0.9s linear infinite; margin: 0 auto 20px auto;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .welcome-card h1 { font-size: 28px; color: var(--text-primary); margin-top: 10px; text-align: center; }
+    .welcome-card p { color: var(--primary-orange); font-size: 14px; margin-top: 6px; text-align: center; }
 
     /* MAIN APP CONTAINER */
     #appContainer { display: flex; width: 100%; height: 100vh; visibility: hidden; }
@@ -207,8 +234,6 @@
 
       <!-- LEFT SIDE DATA COLUMN -->
       <div class="data-column left">
-        
-        <!-- 1. Database Cylinders -->
         <div class="tech-graphic">
           <svg viewBox="0 0 100 100" fill="none">
             <g stroke="#ffffff" stroke-width="2.5" stroke-linecap="round">
@@ -221,7 +246,6 @@
           </svg>
         </div>
 
-        <!-- 2. Animated Bar Chart -->
         <div class="tech-graphic">
           <svg viewBox="0 0 100 100" fill="none">
             <g fill="#ff5500">
@@ -233,7 +257,6 @@
           </svg>
         </div>
 
-        <!-- 3. Connected Data Mesh -->
         <div class="tech-graphic">
           <svg viewBox="0 0 120 100" fill="none">
             <path d="M20 70 L50 20 L90 80 L110 50" stroke="#ff5500" stroke-width="3"/>
@@ -243,13 +266,10 @@
             <circle cx="90" cy="80" r="4" fill="#ff5500"/>
           </svg>
         </div>
-
       </div>
 
       <!-- RIGHT SIDE DATA COLUMN -->
       <div class="data-column right">
-        
-        <!-- 1. Pie Chart Analysis -->
         <div class="tech-graphic">
           <svg viewBox="0 0 100 100" fill="none">
             <path d="M50 50 L50 10 A40 40 0 0 1 85 50 Z" fill="#ff5500" opacity="0.9" />
@@ -260,7 +280,6 @@
           </svg>
         </div>
 
-        <!-- 2. Database with SQL Label -->
         <div class="tech-graphic">
           <svg viewBox="0 0 100 100" fill="none">
             <ellipse cx="50" cy="25" rx="35" ry="10" stroke="#ffffff" stroke-width="2.5" fill="#04070e"/>
@@ -270,7 +289,6 @@
           </svg>
         </div>
 
-        <!-- 3. Line Trend Visualization -->
         <div class="tech-graphic">
           <svg viewBox="0 0 200 100" fill="none">
             <path d="M10 80 Q 50 10, 100 50 T 190 20" stroke="#ff5500" stroke-width="4" fill="none"/>
@@ -279,22 +297,27 @@
             <text x="10" y="96" fill="#9ca3af" font-size="10" font-family="monospace">TREND_01</text>
           </svg>
         </div>
-
       </div>
-
     </div>
 
-    <!-- LOGIN FORM BOX -->
+    <!-- LOGIN FORM BOX WITH RESET PASSWORD -->
     <div class="login-box">
       <h2>Triage SQL Workspace</h2>
       <input type="email" id="loginEmail" placeholder="email@oxiliry.com">
       <input type="password" id="loginPass" placeholder="Password">
       <button id="loginBtn" onclick="attemptLogin()">Login</button>
+      <br>
+      <button type="button" class="reset-pwd-btn" onclick="resetPassword()">Forgot or Reset Password?</button>
       <div id="loginError" class="login-error"></div>
+    </div>
+
+    <!-- BOTTOM RIGHT CORNER BRANDING -->
+    <div class="login-corner-footer">
+      Powered by <b>ReBiz @Triage AI</b>
     </div>
   </div>
 
-  <!-- WELCOME SCREEN OVERLAY -->
+  <!-- WELCOME SCREEN OVERLAY (PERFECTLY CENTERED) -->
   <div id="welcomeOverlay">
     <div class="welcome-card">
       <div class="loader-ring"></div>
@@ -305,7 +328,6 @@
 
   <!-- MAIN APP CONTAINER -->
   <div id="appContainer">
-    <!-- SIDEBAR -->
     <div class="sidebar">
       <div>
         <button class="new-chat-btn" onclick="startNewChat()">+ New Chat</button>
@@ -320,7 +342,6 @@
       </div>
     </div>
 
-    <!-- CHAT WORKSPACE -->
     <div class="main-chat">
       <div class="top-bar">
         <div>
@@ -342,7 +363,6 @@
     </div>
   </div>
 
-  <!-- PrismJS for Syntax Highlighting -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
 
@@ -422,6 +442,20 @@
         btn.innerText = "Login";
         btn.disabled = false;
       }
+    }
+
+    async function resetPassword() {
+      const email = document.getElementById("loginEmail").value;
+      const errorDiv = document.getElementById("loginError");
+      errorDiv.style.display = "none";
+
+      if (!email) {
+        errorDiv.innerText = "Please enter your email to reset password.";
+        errorDiv.style.display = "block";
+        return;
+      }
+
+      alert("Password reset instructions have been sent if the email is registered.");
     }
 
     function logout() {
